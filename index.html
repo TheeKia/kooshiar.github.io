@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <title>Document</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+  <script src="./js/drs-inputs.js"></script>
+  <script src="./js/tools.js"></script>
+  <script src="./js/data.js"></script>
+  <script src="./js/data2.js"></script>
+  <script src="./js/app.js" defer></script>
+</head>
+
+<body>
+  <header>
+    <div id="searchBar">
+      <p class="tInput">
+        <input type="text" id="searchInput" placeholder="Search" />
+      </p>
+      <span class="material-icons-round">search</span>
+    </div>
+    <p class="bInput">
+      <button id="toggleTheme"></button>
+      <label for="toggleTheme" data-icon="brightness_3"></label>
+    </p>
+  </header>
+
+  <main id="mainContainer"></main>
+
+  <div id="footer-loading--container">
+    <div id="footer-loading--box" class="load-box--container">
+      loading
+      <div class="load-box tr"></div>
+      <div class="load-box bl"></div>
+      <div class="load-dot tr"></div>
+      <div class="load-dot tl"></div>
+    </div>
+  </div>
+
+  <footer id="footer">
+    Copyright 2022
+  </footer>
+</body>
+
+</html>

@@ -1,0 +1,165 @@
+.tInput {
+  position: relative;
+  height: $drs-height;
+  display: inline-flex;
+  width: max-content;
+
+  input,
+  label {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0 10px;
+    border-radius: $drs-border-radius;
+    transition: all 0.1s ease-in-out;
+    background: transparent;
+  }
+
+  label {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    font-size: 0.9em;
+    transform: translateY(-50%);
+    min-width: max-content;
+    cursor: text;
+    color: lighten($drs-color, 20);
+    @include icon-before;
+  }
+
+  input {
+    width: 100%;
+    height: $drs-height;
+    outline: none;
+    border: 1px solid $drs-border-color;
+    color: $drs-color;
+    box-shadow: $drs-tInput-boxshadow;
+
+    &:focus {
+      border-color: darken($drs-border-color, 40);
+    }
+
+    &:disabled {
+      box-shadow: $drs-tInput-disabled-boxshadow;
+      & + label {
+        cursor: default;
+        opacity: 0.8;
+      }
+    }
+
+    &::placeholder {
+      opacity: 0;
+      transition: 0.1s ease-in-out;
+    }
+
+    &[type="email"],
+    &[type="url"],
+    &[type="tel"],
+    &[type="number"] {
+      direction: ltr;
+      text-align: left;
+    }
+
+    // CHECK
+    &:-webkit-autofill,
+    &:autofill {
+      animation: autofilled;
+      background: transparent !important;
+    }
+    &:not(:-webkit-autofill),
+    &:not(:autofill) {
+      animation: noAutofill;
+      background: transparent !important;
+    }
+    // CHECK
+  }
+
+  &.ACTIVE {
+    label {
+      top: -2px;
+      left: 5px;
+      padding: 0 5px;
+      font-size: 0.8em;
+      background: $drs-bg-color;
+      color: $drs-color;
+    }
+    input {
+      &::placeholder {
+        opacity: 1;
+      }
+    }
+  }
+
+  &.AUTOFILL {
+    label {
+      &::after {
+        content: "Auto filled";
+        margin-left: auto;
+        margin-right: -20px;
+        color: #888;
+        font-family: monospace;
+      }
+    }
+  }
+
+  &.NOLABEL {
+    margin: 0;
+    input {
+      &::placeholder {
+        opacity: 1;
+      }
+    }
+  }
+
+  &.rtlI {
+    label {
+      left: unset;
+      right: 0;
+      flex-direction: row-reverse;
+      &::before {
+        margin: 0 0 0 0.2em;
+      }
+    }
+    input {
+      text-align: right;
+      direction: rtl;
+    }
+    &.ACTIVE {
+      label {
+        left: unset;
+        right: 5px;
+      }
+    }
+    &.AUTOFILL {
+      label {
+        &::after {
+          margin-left: -20px;
+          margin-right: auto;
+        }
+      }
+    }
+  }
+
+  &.drs-darkTheme {
+    input {
+      border-color: $drs-dark-border-color;
+      color: $drs-dark-color;
+      box-shadow: $drs-dark-tInput-boxshadow;
+      &:focus {
+        border-color: lighten($drs-dark-border-color, 40);
+      }
+      &:disabled {
+        box-shadow: $drs-dark-tInput-disabled-boxshadow;
+      }
+    }
+    label {
+      color: darken($drs-dark-color, 20);
+    }
+    &.ACTIVE {
+      label {
+        color: $drs-dark-color;
+        background: $drs-dark-bg-color;
+      }
+    }
+  }
+}

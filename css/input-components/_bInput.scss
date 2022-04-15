@@ -1,0 +1,219 @@
+@keyframes drs-pending {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 0) scale(0.5);
+  }
+  10% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(0.5);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(10);
+  }
+}
+.bInput {
+  display: inline-flex;
+  min-width: max-content;
+  user-select: none;
+  // overflow: hidden;
+  label {
+    width: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    cursor: pointer;
+    height: $drs-height;
+    padding: 0 1em 0 0.8em;
+    border: 1px dashed $drs-border-color;
+    border-radius: $drs-border-radius;
+    box-shadow: $drs-bInput-boxshadow;
+    color: $drs-color;
+    transition: all 0.1s ease-in-out;
+    overflow: hidden;
+    z-index: 2;
+    @include icon-before;
+    &:empty {
+      &::before {
+        margin: 0 !important;
+      }
+    }
+    &::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, 100%) scale(0.5);
+      width: $drs-height;
+      height: $drs-height;
+      opacity: 0;
+      background: rgba(50, 50, 50, 0.2);
+      border-radius: 50%;
+      z-index: -1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .bInput-progressbar {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      height: 5px;
+      background: #aaa;
+      transform: scaleX(0);
+    }
+  }
+  input,
+  button {
+    opacity: 0;
+    pointer-events: none;
+    position: absolute;
+
+    &:focus + label {
+      border-color: darken($drs-border-color, 40);
+    }
+    &:not(:disabled):active + label {
+      border-color: darken($drs-border-color, 40);
+      box-shadow: 0 0 40px $drs-border-color inset;
+      transition: none;
+    }
+    &:disabled {
+      pointer-events: none;
+      & + label {
+        color: lighten($drs-color, 40);
+        border-color: $drs-border-color;
+        box-shadow: $drs-bInput-disabled-boxshadow;
+        cursor: default;
+      }
+    }
+  }
+
+  &.PENDING {
+    label {
+      color: lighten($drs-color, 40);
+      &::after {
+        animation: drs-pending 2s ease-in infinite;
+      }
+    }
+  }
+  &.SUCCESS {
+    input,
+    button {
+      &:disabled + label {
+        color: $drs-color;
+        border-color: #4fb94f;
+        &::after {
+          background: rgba(5, 180, 0, 0.3);
+          animation: drs-pending 2s ease-in forwards;
+        }
+      }
+    }
+  }
+  &.FAIL {
+    input,
+    button {
+      &:disabled + label {
+        color: #222;
+        border-color: #ff5151;
+        &::after {
+          background: rgba(180, 5, 0, 0.3);
+          animation: drs-pending 2s ease-in-out forwards;
+        }
+      }
+    }
+  }
+
+  &:hover {
+    input:not(:disabled) + label,
+    button:not(:disabled) + label {
+      background: rgba(50, 50, 50, 0.05);
+    }
+  }
+
+  &.rtlI {
+    label {
+      flex-direction: row-reverse;
+      &::before {
+        margin: 0 0 0 0.2em;
+      }
+    }
+  }
+  &.drs-bInput--IconOnly {
+    min-width: $drs-height;
+    width: $drs-height;
+    height: $drs-height;
+    label {
+      padding: 0;
+      &::before {
+        transform: scale(1.2);
+        margin: 0;
+      }
+    }
+  }
+
+  &.drs-darkTheme {
+    label {
+      color: $drs-dark-color;
+      border-color: $drs-dark-border-color;
+      box-shadow: $drs-dark-bInput-boxshadow;
+      &::after {
+        background: rgba(220, 220, 220, 0.2);
+      }
+    }
+    input,
+    button {
+      &:focus + label {
+        border-color: lighten($drs-dark-border-color, 40);
+      }
+      &:not(:disabled):active + label {
+        border-color: lighten($drs-dark-border-color, 40);
+        box-shadow: 0 0 40px $drs-dark-border-color inset;
+      }
+      &:disabled {
+        & + label {
+          color: darken($drs-dark-color, 40);
+          border-color: $drs-dark-border-color;
+          box-shadow: $drs-dark-bInput-disabled-boxshadow;
+        }
+      }
+    }
+    &.PENDING {
+      label {
+        color: darken($drs-dark-color, 40);
+      }
+    }
+    &.SUCCESS {
+      input,
+      button {
+        &:disabled + label {
+          color: $drs-dark-color;
+          border-color: #4fb94f;
+          &::after {
+            background: rgba(10, 255, 0, 0.2);
+          }
+        }
+      }
+    }
+    &.FAIL {
+      input,
+      button {
+        &:disabled + label {
+          color: $drs-dark-color;
+          border-color: #ff5151;
+          &::after {
+            background: rgba(255, 10, 0, 0.2);
+          }
+        }
+      }
+    }
+
+    &:hover {
+      input:not(:disabled) + label,
+      button:not(:disabled) + label {
+        background: rgba(220, 220, 220, 0.05);
+      }
+    }
+  }
+}
