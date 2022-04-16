@@ -1,15 +1,52 @@
 let isLoading = true;
 let addedItems = 0;
+let isSearching = false;
 
 // * Header Elements
 const El_searchInput = select("#searchInput");
 const Di_searchInput = new TInput(El_searchInput, true);
 const El_toggleTheme = select("#toggleTheme");
 const Di_toggleTheme = new BInput(El_toggleTheme, true);
-
+// * Body Elements
+const mainContainer = select("#mainContainer");
+const searchResultsContainer = select("#searchResults");
 // * Footer Elements
 const footerLoading = select("#footer-loading--container");
 
+// * Search
+El_searchInput.addEventListener("focusout", (ev) => {
+  if (ev.target.value === "") {
+    isSearching = false;
+  }
+});
+El_searchInput.addEventListener("input", (ev) => {
+  if (ev.target.value === "") {
+    isSearching = false;
+  }
+  isSearching = true;
+
+  data.push(1);
+  data.pop();
+  data.map((item) => {
+    if (
+      !item["description"].toLowerCase().includes(ev.target.value.toLowerCase())
+    ) {
+      try {
+        hideMainItem(item["page_id"]);
+      } catch {
+        //
+      }
+    } else {
+      try {
+        showMainItem(item["page_id"]);
+      } catch {
+        //
+      }
+    }
+  });
+});
+
+// *
 Di_toggleTheme.onClick(() => {
   icon = Di_toggleTheme.label.dataset.icon;
   if (icon === "brightness_3") {
@@ -32,7 +69,7 @@ Di_toggleTheme.onClick(() => {
 });
 
 // Fetch
-const mainContainer = select("#mainContainer");
+
 const columns = [];
 const numberOfCols = Math.floor((window.innerWidth * 0.8) / 300);
 for (let i = 0; i < numberOfCols; i++) {
@@ -42,18 +79,18 @@ for (let i = 0; i < numberOfCols; i++) {
   mainContainer.appendChild(div_col);
 }
 
-function addItem() {
+function addItem(ref, output, count) {
   const div_item = document.createElement("div");
+  div_item.id = ref[count]["page_id"];
   div_item.setAttribute("class", "item");
   let img = new Image();
-  img.src = data[addedItems]["image_url"];
+  img.src = ref[count]["image_url"];
   div_item.appendChild(img);
 
-  addedItems++;
   let minHeight = null;
   let theCol;
   img.onload = function () {
-    columns.forEach((col) => {
+    output.forEach((col) => {
       if (minHeight === null) {
         minHeight = col.offsetHeight;
         theCol = col;
@@ -67,33 +104,42 @@ function addItem() {
 
     //*
     theCol.appendChild(div_item);
+    count++;
     setTimeout(() => {
-      showItem(div_item);
-    }, 500);
-    setTimeout(() => {
-      if (addedItems < data.length) addItem();
+      if (count < ref.length) addItem(ref, output, count);
       else {
         showFooterLoading(false);
         isLoading = false;
-        // footerLoading.style.opacity = 0;
-        // setTimeout(() => {
-        //   footerLoading.style.display = "none";
-        // }, 1500);
       }
-    }, 100);
+    }, 50);
+    setTimeout(() => {
+      try {
+        if (
+          ref[count - 1]["description"]
+            .toLowerCase()
+            .includes(El_searchInput.value.toLowerCase())
+        ) {
+          showItem(div_item);
+        }
+      } catch {
+        console.log(count);
+      }
+    }, 500);
   };
 }
-addItem();
+addItem(data, columns, addedItems);
 
 document.addEventListener("scroll", (ev) => {
   let bodyHeight = document.body.offsetHeight;
-  if (!isLoading && bodyHeight - window.scrollY < window.innerHeight + 200) {
+  if (
+    !isSearching &&
+    !isLoading &&
+    bodyHeight - window.scrollY < window.innerHeight + 200
+  ) {
     console.log("now");
     data = data.concat(data2);
     isLoading = true;
-    if (isLoading) {
-      showFooterLoading(true);
-    }
-    addItem();
+    showFooterLoading(true);
+    addItem(data, columns, addedItems);
   }
 });

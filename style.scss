@@ -64,8 +64,11 @@ main {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
+  transition: $themeTransition;
   min-height: calc(100vh - 15rem);
   .col {
+    display: flex;
+    flex-direction: column;
     width: 300px;
     margin: 1rem;
     &:first-child {
@@ -82,12 +85,17 @@ main {
     margin-bottom: 1rem;
     display: flex;
     border-radius: 5px;
+    order: 1;
     overflow: hidden;
     opacity: 0;
     transition: $themeTransition;
     img {
       border-radius: 5px;
       width: 100%;
+    }
+    &.hide {
+      // height: 0;
+      order: 2;
     }
   }
 }

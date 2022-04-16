@@ -21,3 +21,21 @@ function showFooterLoading(tf) {
     element.style.display = "none";
   }
 }
+function hideMainItem(id) {
+  const el = document.getElementById(id);
+  if (el.classList.contains("hide")) return;
+  el.classList.add("hide");
+  el.style.opacity = 0;
+  // setTimeout(() => {
+  //   el.style.display = "none";
+  // }, 300);
+}
+function showMainItem(id) {
+  const el = document.getElementById(id);
+  if (!el.classList.contains("hide")) return;
+  el.classList.remove("hide");
+  // el.style.display = "flex";
+  setTimeout(() => {
+    el.style.opacity = 1;
+  }, 50);
+}
