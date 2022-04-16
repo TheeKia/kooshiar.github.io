@@ -1,18 +1,22 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap");
+// @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;700&display=swap");
 @import "./css/drs-inputs";
 @import "./css/initial";
+@import "./css/segoe-ui";
+
 $themeTransition: all 0.3s ease-in-out;
 
 body {
-  background: #eee;
+  background: url(img/bg3.png) repeat;
+  background-color: #eee;
   color: #222;
   min-height: 100vh;
-  font-family: "Poppins", sans-serif;
+  font-family: "Segoe UI Regular", sans-serif;
   transition: $themeTransition;
   padding-top: 5rem;
   &.DARKTHEME {
-    background: #181818;
+    background-color: #181818;
   }
+  overflow-y: scroll;
 }
 
 header {
@@ -28,6 +32,12 @@ header {
   align-items: center;
   justify-content: space-between;
   transition: $themeTransition;
+  z-index: 10;
+  .header-title {
+    font-weight: bold;
+    margin-right: 1rem;
+    font-size: 22px;
+  }
   #searchBar {
     display: flex;
     align-items: center;
@@ -37,9 +47,23 @@ header {
       font-family: "Poppins", sans-serif;
       min-width: 300px;
     }
-    .material-icons-round {
+    .searchBar-r {
+      display: flex;
+      align-items: center;
+      justify-content: center;
       pointer-events: none;
-      margin-left: -30px;
+      margin-left: -0.5rem;
+      transform: translateX(-100%);
+      transition: $themeTransition;
+      .ctrlK {
+        display: inline-flex;
+        background: #ddd;
+        border-radius: 5px;
+        font-size: 14px;
+        margin-right: 0.5rem;
+        padding: 0 0.3rem;
+        transition: $themeTransition;
+      }
     }
   }
   label[for="toggleTheme"] {
@@ -49,15 +73,39 @@ header {
 
 // * Incomplete
 .DARKTHEME {
+  color: #bbb;
   header {
     background: rgba(0, 0, 0, 0.8);
-    .material-icons-round {
+    .header-title {
       color: #bbb;
+    }
+    #searchBar {
+      .searchBar-r {
+        color: #bbb;
+        .ctrlK {
+          background: #222;
+        }
+      }
     }
   }
 }
 
 // *
+#resultsInfo {
+  width: 80%;
+  margin: 0 auto;
+  // text-align: center;
+}
+#nothing {
+  width: 80%;
+  min-height: calc(100vh - 10rem);
+  margin: 0 auto;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
 main {
   width: 80%;
   margin: 0 auto;
@@ -65,7 +113,7 @@ main {
   align-items: flex-start;
   justify-content: space-between;
   transition: $themeTransition;
-  min-height: calc(100vh - 15rem);
+  // min-height: calc(100vh - 15rem);
   .col {
     display: flex;
     flex-direction: column;
@@ -79,13 +127,13 @@ main {
     }
   }
   .item {
+    position: relative;
     background: deepskyblue;
     width: 100%;
     height: fit-content;
     margin-bottom: 1rem;
     display: flex;
     border-radius: 5px;
-    order: 1;
     overflow: hidden;
     opacity: 0;
     transition: $themeTransition;
@@ -93,9 +141,63 @@ main {
       border-radius: 5px;
       width: 100%;
     }
-    &.hide {
-      // height: 0;
-      order: 2;
+    .info {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      padding: 1rem;
+      background: rgba(50, 50, 50, 0.6);
+      opacity: 0;
+      cursor: zoom-in;
+      transition: 0.2s ease-in-out;
+
+      h3.title {
+        color: #fff;
+        margin-bottom: 1rem;
+      }
+      .description {
+        max-height: calc(100% - 3rem);
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        line-height: 1.6rem;
+        text-align: justify;
+        span {
+          background: #fff;
+        }
+      }
+      .readMore {
+        font-size: 0.9rem;
+        margin-top: 1rem;
+        color: coral;
+      }
+      a.domain {
+        display: inline-flex;
+        align-items: center;
+        position: absolute;
+        left: 0.5rem;
+        bottom: 0.5rem;
+        border-radius: 5px;
+        padding: 0.5rem;
+        font-size: 14px;
+        font-weight: bold;
+        font-family: "Segoe UI Bold";
+        background: #fff;
+        color: #222;
+        &::before {
+          content: "\e157";
+          font-family: "Material Icons Round";
+          margin-right: 0.2rem;
+        }
+      }
+    }
+    &:hover {
+      .info {
+        opacity: 1;
+        backdrop-filter: blur(3px);
+      }
     }
   }
 }
@@ -166,7 +268,7 @@ main {
 #footer-loading--container {
   position: fixed;
   left: calc(50% - 100px);
-  bottom: 1rem;
+  bottom: 4rem;
   width: 200px;
   height: 60px;
   border-radius: 10px;
@@ -204,10 +306,16 @@ main {
 }
 
 footer {
-  width: 100%;
+  position: fixed;
+  bottom: 0;
+  left: calc(50% - 200px);
   margin-top: 20rem;
-  padding: 1rem;
+  width: 400px;
+  border-radius: 10px 10px 0 0;
+  padding: 0.3rem 1rem;
   text-align: center;
-  background: #222;
+  background: rgba(34, 34, 34, 0.9);
+  backdrop-filter: blur(5px);
   color: #aaa;
+  font-size: 14px;
 }

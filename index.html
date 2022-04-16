@@ -18,10 +18,14 @@
 <body>
   <header>
     <div id="searchBar">
+      <h1 class="header-title">XOOSHA</h1>
       <p class="tInput">
         <input type="text" id="searchInput" placeholder="Search" />
       </p>
-      <span class="material-icons-round">search</span>
+      <div class="searchBar-r">
+        <span class="ctrlK">Ctrl+K</span>
+        <span class="material-icons-round">search</span>
+      </div>
     </div>
     <p class="bInput">
       <button id="toggleTheme"></button>
@@ -29,6 +33,13 @@
     </p>
   </header>
 
+  <div id="resultsInfo"></div>
+  <div id="nothing" style="display: none;">
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    <lottie-player src="https://assets8.lottiefiles.com/packages/lf20_7fwvvesa.json" background="transparent" speed="1"
+      style="width: 300px; height: 300px;" loop autoplay></lottie-player>
+    <h2><span style="color: red;">No</span> Results found!</h2>
+  </div>
   <main id="mainContainer"></main>
 
   <div id="footer-loading--container">
@@ -42,7 +53,8 @@
   </div>
 
   <footer id="footer">
-    Copyright 2022
+    Designed by <span style="color: coral;">Kia Abdi</span> - <span
+      style="user-select: all;">kia.abdi@outlook.com</span>
   </footer>
 </body>
 

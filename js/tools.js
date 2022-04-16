@@ -21,14 +21,11 @@ function showFooterLoading(tf) {
     element.style.display = "none";
   }
 }
-function hideMainItem(id) {
-  const el = document.getElementById(id);
+function hideMainItem(id, isElement = false) {
+  const el = isElement ? id : document.getElementById(id);
   if (el.classList.contains("hide")) return;
   el.classList.add("hide");
   el.style.opacity = 0;
-  // setTimeout(() => {
-  //   el.style.display = "none";
-  // }, 300);
 }
 function showMainItem(id) {
   const el = document.getElementById(id);
