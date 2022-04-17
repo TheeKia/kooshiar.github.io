@@ -1439,7 +1439,7 @@ main .item {
   transition: all 0.3s ease-in-out;
 }
 
-main .item img {
+main .item img.mainImage {
   bottom: 0;
   width: 100%;
   -webkit-transition: all 0.3s ease-in-out;
@@ -1525,6 +1525,59 @@ main .item .info .price {
   margin-top: 0.5rem;
 }
 
+main .item .info .similar-container {
+  display: none;
+  opacity: 0;
+  -webkit-transform: translateY(20px);
+          transform: translateY(20px);
+  -webkit-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+
+main .item .info .similar-container h4 {
+  position: relative;
+  -ms-flex-preferred-size: 100%;
+      flex-basis: 100%;
+  font-size: 22px;
+  margin: 1rem 0;
+}
+
+main .item .info .similar-container h4::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 150px;
+  width: calc(100% - 150px);
+  height: 2px;
+  background-color: #aaa;
+}
+
+main .item .info .similar-container .similar-item {
+  width: 150px;
+  height: 150px;
+  opacity: 0;
+  -webkit-transform: translateY(20px);
+          transform: translateY(20px);
+  cursor: pointer;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin: 0.2rem;
+  -webkit-transition: 0.3s ease-in-out;
+  transition: 0.3s ease-in-out;
+}
+
+main .item .info .similar-container .similar-item.active {
+  opacity: 1;
+  -webkit-transform: translateY(0);
+          transform: translateY(0);
+}
+
+main .item .info .similar-container.active {
+  opacity: 1;
+  -webkit-transform: translateY(0);
+          transform: translateY(0);
+}
+
 main .item .info a.domain {
   display: -webkit-inline-box;
   display: -ms-inline-flexbox;
@@ -1537,6 +1590,9 @@ main .item .info a.domain {
   bottom: 1rem;
   border-radius: 5px;
   padding: 0.5rem;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
   font-size: 14px;
   font-weight: bold;
   font-family: "Segoe UI Bold";
@@ -1571,6 +1627,13 @@ main .item.expanded .info {
   -webkit-backdrop-filter: unset;
           backdrop-filter: unset;
   z-index: 9;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
 }
 
 main .item.expanded .info h3.title {
@@ -1610,7 +1673,24 @@ main .item.expanded .info .price {
   margin-top: 1rem;
 }
 
+main .item.expanded .info .similar-container {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  margin-top: auto;
+}
+
 main .item.expanded .info a.domain {
+  position: unset;
+  left: unset;
+  bottom: unset;
+  margin-top: 1rem;
   border: 1px solid #ddd;
 }
 
