@@ -1,4 +1,7 @@
 // TODO: back button
+// TODO: save default theme
+
+const searchDelay = 400;
 /**
  * * Variables
  */
@@ -108,6 +111,7 @@ function loadSimilars(container, refrence, closeElement) {
    * @param refrence      :object   |   single data object
    * @param closeElement  :element  |   close button for container element
    */
+
   let count = 0;
   const similars = data.filter((item) => {
     if (item["tags"] === null) return false;
@@ -123,6 +127,7 @@ function loadSimilars(container, refrence, closeElement) {
     addSimilars(container, similars, closeElement);
     container.classList.add("active");
   }
+
   console.log(similars);
 }
 
@@ -345,7 +350,7 @@ El_searchInput.addEventListener("input", (ev) => {
       showFooterLoading(false);
       nothing.style.display = "flex";
     }
-  }, 100);
+  }, searchDelay);
 });
 // Ctrl+K
 document.addEventListener("keydown", (ev) => {

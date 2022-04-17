@@ -6,7 +6,7 @@
 $themeTransition: all 0.3s ease-in-out;
 
 body {
-  background: url(img/bg3.png) repeat;
+  background: url(../img/bg.png) repeat;
   background-color: #eee;
   color: #222;
   min-height: 100vh;
@@ -142,6 +142,7 @@ main {
         bottom: 0;
         width: 100%;
         transition: $themeTransition;
+        border-radius: 5px;
       }
       .info {
         position: absolute;
@@ -293,6 +294,7 @@ main {
           width: auto;
           height: 100%;
           transition: $themeTransition;
+          border-radius: 0;
         }
         .info {
           position: unset;
