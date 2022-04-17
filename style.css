@@ -1301,7 +1301,7 @@ header #searchBar {
 
 header #searchBar #searchInput {
   font-size: 16px;
-  font-family: "Poppins", sans-serif;
+  font-family: "Segoe UI Regular", sans-serif;
   min-width: 300px;
 }
 
@@ -1329,9 +1329,9 @@ header #searchBar .searchBar-r .ctrlK {
   display: inline-flex;
   background: #ddd;
   border-radius: 5px;
-  font-size: 14px;
+  font-size: 12px;
   margin-right: 0.5rem;
-  padding: 0 0.3rem;
+  padding: 0.1rem 0.3rem;
   -webkit-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
 }
@@ -1424,7 +1424,6 @@ main .col:last-child {
 
 main .item {
   position: relative;
-  background: deepskyblue;
   width: 100%;
   height: -webkit-fit-content;
   height: -moz-fit-content;
@@ -1441,14 +1440,16 @@ main .item {
 }
 
 main .item img {
-  border-radius: 5px;
+  bottom: 0;
   width: 100%;
+  -webkit-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
 }
 
 main .item .info {
   position: absolute;
-  left: 0;
-  top: 0;
+  right: 0;
+  bottom: 0;
   width: 100%;
   height: 100%;
   padding: 1rem;
@@ -1465,23 +1466,62 @@ main .item .info h3.title {
   margin-bottom: 1rem;
 }
 
+main .item .info .closeBtn {
+  display: none;
+  font-family: "Material Icons Round";
+  position: absolute;
+  right: 0;
+  top: 0;
+  font-size: 24px;
+  padding: 1rem;
+  cursor: pointer;
+}
+
+main .item .info .closeBtn:hover {
+  color: coral;
+}
+
 main .item .info .description {
   max-height: calc(100% - 3rem);
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-  line-height: 1.6rem;
+  line-height: 1.5rem;
+  padding: 0 0.5rem;
   text-align: justify;
+  background: #fff;
+  border-radius: 3px;
 }
 
-main .item .info .description span {
-  background: #fff;
+main .item .info .description ul li {
+  display: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+main .item .info .description ul li:first-child {
+  display: block;
+}
+
+main .item .info .description ul + * {
+  display: none;
 }
 
 main .item .info .readMore {
   font-size: 0.9rem;
   margin-top: 1rem;
   color: coral;
+}
+
+main .item .info .price {
+  color: #fff;
+  background: #222;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  border-radius: 3px;
+  padding: 0.2rem 0.5rem;
 }
 
 main .item .info a.domain {
@@ -1492,8 +1532,8 @@ main .item .info a.domain {
       -ms-flex-align: center;
           align-items: center;
   position: absolute;
-  left: 0.5rem;
-  bottom: 0.5rem;
+  left: 1rem;
+  bottom: 1rem;
   border-radius: 5px;
   padding: 0.5rem;
   font-size: 14px;
@@ -1509,10 +1549,76 @@ main .item .info a.domain::before {
   margin-right: 0.2rem;
 }
 
-main .item:hover .info {
+main .item:not(.expanded):hover .info {
   opacity: 1;
   -webkit-backdrop-filter: blur(3px);
           backdrop-filter: blur(3px);
+}
+
+main .item.expanded {
+  overflow: visible;
+}
+
+main .item.expanded img {
+  z-index: 9;
+}
+
+main .item.expanded .info {
+  cursor: unset;
+  padding: 1.5rem;
+  background: #eee;
+  -webkit-backdrop-filter: unset;
+          backdrop-filter: unset;
+  z-index: 9;
+}
+
+main .item.expanded .info h3.title {
+  color: #222;
+}
+
+main .item.expanded .info .closeBtn {
+  display: block;
+}
+
+main .item.expanded .info .description {
+  font-size: 1.15rem;
+  width: calc(100% - 5rem);
+  white-space: normal;
+  background: transparent;
+}
+
+main .item.expanded .info .description ul {
+  margin-bottom: 1rem;
+}
+
+main .item.expanded .info .description ul li {
+  display: list-item;
+  margin-left: 1rem;
+  list-style: circle;
+  text-overflow: unset;
+  white-space: normal;
+  overflow: unset;
+}
+
+main .item.expanded .info .description ul + * {
+  display: block;
+}
+
+main .item.expanded .info .price {
+  font-size: 1.5rem;
+  margin-top: 1rem;
+}
+
+main .item.expanded .info a.domain {
+  border: 1px solid #ddd;
+}
+
+main .item.expanded .info a.domain:hover {
+  border-color: #aaa;
+}
+
+main .item.expanded .info .readMore {
+  display: none;
 }
 
 @-webkit-keyframes loadTR {
@@ -1716,4 +1822,18 @@ footer {
           backdrop-filter: blur(5px);
   color: #aaa;
   font-size: 14px;
+}
+
+#overlay {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9;
+  background: rgba(0, 0, 0, 0.9);
+  display: none;
+  opacity: 0;
+  -webkit-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
 }
