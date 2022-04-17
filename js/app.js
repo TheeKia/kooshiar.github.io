@@ -98,7 +98,7 @@ function addSimilars(container, data, closeElement) {
     if (i === elements.length - 1) clearInterval(interval);
     elements[i].classList.add("active");
     i++;
-  }, 150);
+  }, 100);
 }
 // Load Similar Posts
 function loadSimilars(container, refrence, closeElement) {
@@ -143,6 +143,9 @@ function addItem(ref, columns, count) {
   const div_item = document.createElement("div");
   div_item.id = ref[count]["page_id"];
   div_item.setAttribute("class", "item");
+  // * Article Container
+  const article_container = document.createElement("article");
+  article_container.setAttribute("class", "container");
   // * Info Container
   const div_info = document.createElement("div");
   div_info.setAttribute("class", "info");
@@ -183,40 +186,35 @@ function addItem(ref, columns, count) {
   div_info.appendChild(div_more);
   div_info.appendChild(section_similar);
   div_info.appendChild(a_domain);
-  div_item.appendChild(div_info);
-  div_item.appendChild(img);
+  article_container.appendChild(img);
+  article_container.appendChild(div_info);
+  div_item.appendChild(article_container);
 
   // * On Click | Expand
   div_item.addEventListener("click", () => {
     if (div_item.classList.contains("expanded")) return;
     clearTimeout(similarsTimeout);
-    div_info.style.opacity = 0;
 
     img.style.opacity = 0;
-    img.style.left = 0;
+    div_info.style.opacity = 0;
 
     setTimeout(() => {
       div_item.classList.add("expanded");
-      div_info.style.transition = "all 0s";
+
       img.style.transition = "all 0s";
+      img.style.transform = "translateX(-25px)";
+      div_info.style.transition = "all 0s";
+      div_info.style.transform = "translateX(25px)";
 
-      img.style.width = "auto";
-      img.style.position = "fixed";
-      img.style.height = window.innerHeight - header.offsetHeight + "px";
-
-      div_info.style.position = "fixed";
-      div_info.style.right = 0;
-      div_info.style.width = mainContainer.offsetWidth - img.width + "px";
-      div_info.style.height = window.innerHeight - header.offsetHeight + "px";
       setTimeout(() => {
-        div_info.style.transition = "all 0.3s ease-in-out";
         img.style.transition = "all 0.3s ease-in-out";
+        div_info.style.transition = "all 0.3s ease-in-out";
 
         img.style.opacity = 1;
-        img.style.left = mainContainer.offsetLeft + "px";
-
-        div_info.style.right = mainContainer.offsetLeft + "px";
+        img.style.transform = "translateX(0)";
+        div_info.style.transform = "translateX(0)";
         div_info.style.opacity = 1;
+
         similarsTimeout = setTimeout(() => {
           loadSimilars(section_similar, ref[count], div_close);
         }, 300);
@@ -226,23 +224,18 @@ function addItem(ref, columns, count) {
   // * Close
   div_close.addEventListener("click", () => {
     img.style.opacity = 0;
-    img.style.left = 0;
-
+    img.style.transform = "translateX(-25px)";
     div_info.style.opacity = 0;
-    div_info.style.right = 0;
+    div_info.style.transform = "translateX(25px)";
 
     setTimeout(() => {
       div_item.classList.remove("expanded");
-      div_info.style.transition = "all 0s";
+
       img.style.transition = "all 0s";
+      div_info.style.transition = "all 0s";
 
-      img.style.width = "100%";
-      img.style.position = "static";
-      img.style.height = "unset";
-
-      div_info.style.position = "absolute";
-      div_info.style.width = "100%";
-      div_info.style.height = "100%";
+      img.style.transform = "translateX(0)";
+      div_info.style.transform = "translateX(0)";
 
       setTimeout(() => {
         img.style.transition = "all 0.3s ease-in-out";

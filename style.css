@@ -1257,6 +1257,7 @@ body.DARKTHEME {
 }
 
 header {
+  height: 80px;
   position: fixed;
   top: 0;
   left: 0;
@@ -1439,14 +1440,14 @@ main .item {
   transition: all 0.3s ease-in-out;
 }
 
-main .item img.mainImage {
+main .item article.container img.mainImage {
   bottom: 0;
   width: 100%;
   -webkit-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
 }
 
-main .item .info {
+main .item article.container .info {
   position: absolute;
   right: 0;
   bottom: 0;
@@ -1461,12 +1462,12 @@ main .item .info {
   transition: 0.2s ease-in-out;
 }
 
-main .item .info h3.title {
+main .item article.container .info h3.title {
   color: #fff;
   margin-bottom: 1rem;
 }
 
-main .item .info .closeBtn {
+main .item article.container .info .closeBtn {
   display: none;
   font-family: "Material Icons Round";
   position: absolute;
@@ -1477,11 +1478,11 @@ main .item .info .closeBtn {
   cursor: pointer;
 }
 
-main .item .info .closeBtn:hover {
+main .item article.container .info .closeBtn:hover {
   color: coral;
 }
 
-main .item .info .description {
+main .item article.container .info .description {
   max-height: calc(100% - 3rem);
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -1493,28 +1494,28 @@ main .item .info .description {
   border-radius: 3px;
 }
 
-main .item .info .description ul li {
+main .item article.container .info .description ul li {
   display: none;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
 }
 
-main .item .info .description ul li:first-child {
+main .item article.container .info .description ul li:first-child {
   display: block;
 }
 
-main .item .info .description ul + * {
+main .item article.container .info .description ul + * {
   display: none;
 }
 
-main .item .info .readMore {
+main .item article.container .info .readMore {
   font-size: 0.9rem;
   margin-top: 1rem;
   color: coral;
 }
 
-main .item .info .price {
+main .item article.container .info .price {
   color: #fff;
   background: #222;
   width: -webkit-fit-content;
@@ -1525,7 +1526,7 @@ main .item .info .price {
   margin-top: 0.5rem;
 }
 
-main .item .info .similar-container {
+main .item article.container .info .similar-container {
   display: none;
   opacity: 0;
   -webkit-transform: translateY(20px);
@@ -1534,7 +1535,7 @@ main .item .info .similar-container {
   transition: all 0.3s ease-in-out;
 }
 
-main .item .info .similar-container h4 {
+main .item article.container .info .similar-container h4 {
   position: relative;
   -ms-flex-preferred-size: 100%;
       flex-basis: 100%;
@@ -1542,7 +1543,7 @@ main .item .info .similar-container h4 {
   margin: 1rem 0;
 }
 
-main .item .info .similar-container h4::after {
+main .item article.container .info .similar-container h4::after {
   content: "";
   position: absolute;
   top: 50%;
@@ -1552,7 +1553,7 @@ main .item .info .similar-container h4::after {
   background-color: #aaa;
 }
 
-main .item .info .similar-container .similar-item {
+main .item article.container .info .similar-container .similar-item {
   width: 150px;
   height: 150px;
   opacity: 0;
@@ -1566,19 +1567,19 @@ main .item .info .similar-container .similar-item {
   transition: 0.3s ease-in-out;
 }
 
-main .item .info .similar-container .similar-item.active {
+main .item article.container .info .similar-container .similar-item.active {
   opacity: 1;
   -webkit-transform: translateY(0);
           transform: translateY(0);
 }
 
-main .item .info .similar-container.active {
+main .item article.container .info .similar-container.active {
   opacity: 1;
   -webkit-transform: translateY(0);
           transform: translateY(0);
 }
 
-main .item .info a.domain {
+main .item article.container .info a.domain {
   display: -webkit-inline-box;
   display: -ms-inline-flexbox;
   display: inline-flex;
@@ -1600,7 +1601,7 @@ main .item .info a.domain {
   color: #222;
 }
 
-main .item .info a.domain::before {
+main .item article.container .info a.domain::before {
   content: "\e157";
   font-family: "Material Icons Round";
   margin-right: 0.2rem;
@@ -1616,17 +1617,35 @@ main .item.expanded {
   overflow: visible;
 }
 
-main .item.expanded img {
-  z-index: 9;
+main .item.expanded article.container {
+  position: fixed;
+  width: 80%;
+  left: 10%;
+  top: 80px;
+  height: calc(100% - 80px);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: stretch;
+      -ms-flex-align: stretch;
+          align-items: stretch;
+  z-index: 5;
 }
 
-main .item.expanded .info {
+main .item.expanded article.container img.mainImage {
+  width: auto;
+  height: 100%;
+  -webkit-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+
+main .item.expanded article.container .info {
+  position: unset;
   cursor: unset;
   padding: 1.5rem;
   background: #eee;
   -webkit-backdrop-filter: unset;
           backdrop-filter: unset;
-  z-index: 9;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -1634,28 +1653,31 @@ main .item.expanded .info {
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
+  height: 100%;
+  -webkit-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
 }
 
-main .item.expanded .info h3.title {
+main .item.expanded article.container .info h3.title {
   color: #222;
 }
 
-main .item.expanded .info .closeBtn {
+main .item.expanded article.container .info .closeBtn {
   display: block;
 }
 
-main .item.expanded .info .description {
+main .item.expanded article.container .info .description {
   font-size: 1.15rem;
   width: calc(100% - 5rem);
   white-space: normal;
   background: transparent;
 }
 
-main .item.expanded .info .description ul {
+main .item.expanded article.container .info .description ul {
   margin-bottom: 1rem;
 }
 
-main .item.expanded .info .description ul li {
+main .item.expanded article.container .info .description ul li {
   display: list-item;
   margin-left: 1rem;
   list-style: circle;
@@ -1664,16 +1686,16 @@ main .item.expanded .info .description ul li {
   overflow: unset;
 }
 
-main .item.expanded .info .description ul + * {
+main .item.expanded article.container .info .description ul + * {
   display: block;
 }
 
-main .item.expanded .info .price {
+main .item.expanded article.container .info .price {
   font-size: 1.5rem;
   margin-top: 1rem;
 }
 
-main .item.expanded .info .similar-container {
+main .item.expanded article.container .info .similar-container {
   width: 100%;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -1686,7 +1708,7 @@ main .item.expanded .info .similar-container {
   margin-top: auto;
 }
 
-main .item.expanded .info a.domain {
+main .item.expanded article.container .info a.domain {
   position: unset;
   left: unset;
   bottom: unset;
@@ -1694,11 +1716,11 @@ main .item.expanded .info a.domain {
   border: 1px solid #ddd;
 }
 
-main .item.expanded .info a.domain:hover {
+main .item.expanded article.container .info a.domain:hover {
   border-color: #aaa;
 }
 
-main .item.expanded .info .readMore {
+main .item.expanded article.container .info .readMore {
   display: none;
 }
 

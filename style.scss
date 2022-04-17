@@ -20,6 +20,7 @@ body {
 }
 
 header {
+  height: 80px;
   position: fixed;
   top: 0;
   left: 0;
@@ -136,136 +137,138 @@ main {
     overflow: hidden;
     opacity: 0;
     transition: $themeTransition;
-    img.mainImage {
-      bottom: 0;
-      width: 100%;
-      transition: $themeTransition;
-    }
-    .info {
-      position: absolute;
-      right: 0;
-      bottom: 0;
-      width: 100%;
-      height: 100%;
-      padding: 1rem;
-      background: rgba(50, 50, 50, 0.6);
-      opacity: 0;
-      cursor: zoom-in;
-      transition: 0.2s ease-in-out;
-
-      h3.title {
-        color: #fff;
-        margin-bottom: 1rem;
+    article.container {
+      img.mainImage {
+        bottom: 0;
+        width: 100%;
+        transition: $themeTransition;
       }
-      .closeBtn {
-        display: none;
-        font-family: "Material Icons Round";
+      .info {
         position: absolute;
         right: 0;
-        top: 0;
-        font-size: 24px;
+        bottom: 0;
+        width: 100%;
+        height: 100%;
         padding: 1rem;
-        cursor: pointer;
-        &:hover {
-          color: coral;
+        background: rgba(50, 50, 50, 0.6);
+        opacity: 0;
+        cursor: zoom-in;
+        transition: 0.2s ease-in-out;
+
+        h3.title {
+          color: #fff;
+          margin-bottom: 1rem;
         }
-      }
-      .description {
-        max-height: calc(100% - 3rem);
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        overflow: hidden;
-        line-height: 1.5rem;
-        padding: 0 0.5rem;
-        text-align: justify;
-        background: #fff;
-        border-radius: 3px;
-        ul {
-          li {
-            display: none;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            overflow: hidden;
-            &:first-child {
-              display: block;
+        .closeBtn {
+          display: none;
+          font-family: "Material Icons Round";
+          position: absolute;
+          right: 0;
+          top: 0;
+          font-size: 24px;
+          padding: 1rem;
+          cursor: pointer;
+          &:hover {
+            color: coral;
+          }
+        }
+        .description {
+          max-height: calc(100% - 3rem);
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden;
+          line-height: 1.5rem;
+          padding: 0 0.5rem;
+          text-align: justify;
+          background: #fff;
+          border-radius: 3px;
+          ul {
+            li {
+              display: none;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+              overflow: hidden;
+              &:first-child {
+                display: block;
+              }
+            }
+            & + * {
+              display: none;
             }
           }
-          & + * {
-            display: none;
-          }
         }
-      }
-      .readMore {
-        font-size: 0.9rem;
-        margin-top: 1rem;
-        color: coral;
-      }
-      .price {
-        color: #fff;
-        background: #222;
-        width: fit-content;
-        border-radius: 3px;
-        padding: 0.2rem 0.5rem;
-        margin-top: 0.5rem;
-      }
-      .similar-container {
-        display: none;
-        opacity: 0;
-        transform: translateY(20px);
-        transition: $themeTransition;
-        h4 {
-          position: relative;
-          flex-basis: 100%;
-          font-size: 22px;
-          margin: 1rem 0;
-          &::after {
-            content: "";
-            position: absolute;
-            top: 50%;
-            left: 150px;
-            width: calc(100% - 150px);
-            height: 2px;
-            background-color: #aaa;
-          }
+        .readMore {
+          font-size: 0.9rem;
+          margin-top: 1rem;
+          color: coral;
         }
-        .similar-item {
-          width: 150px;
-          height: 150px;
+        .price {
+          color: #fff;
+          background: #222;
+          width: fit-content;
+          border-radius: 3px;
+          padding: 0.2rem 0.5rem;
+          margin-top: 0.5rem;
+        }
+        .similar-container {
+          display: none;
           opacity: 0;
           transform: translateY(20px);
-          cursor: pointer;
-          border: 1px solid #ddd;
-          border-radius: 5px;
-          margin: 0.2rem;
-          transition: 0.3s ease-in-out;
+          transition: $themeTransition;
+          h4 {
+            position: relative;
+            flex-basis: 100%;
+            font-size: 22px;
+            margin: 1rem 0;
+            &::after {
+              content: "";
+              position: absolute;
+              top: 50%;
+              left: 150px;
+              width: calc(100% - 150px);
+              height: 2px;
+              background-color: #aaa;
+            }
+          }
+          .similar-item {
+            width: 150px;
+            height: 150px;
+            opacity: 0;
+            transform: translateY(20px);
+            cursor: pointer;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin: 0.2rem;
+            transition: 0.3s ease-in-out;
+            &.active {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
           &.active {
             opacity: 1;
             transform: translateY(0);
           }
         }
-        &.active {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-      a.domain {
-        display: inline-flex;
-        align-items: center;
-        position: absolute;
-        left: 1rem;
-        bottom: 1rem;
-        border-radius: 5px;
-        padding: 0.5rem;
-        width: fit-content;
-        font-size: 14px;
-        font-weight: bold;
-        font-family: "Segoe UI Bold";
-        background: #fff;
-        color: #222;
-        &::before {
-          content: "\e157";
-          font-family: "Material Icons Round";
-          margin-right: 0.2rem;
+        a.domain {
+          display: inline-flex;
+          align-items: center;
+          position: absolute;
+          left: 1rem;
+          bottom: 1rem;
+          border-radius: 5px;
+          padding: 0.5rem;
+          width: fit-content;
+          font-size: 14px;
+          font-weight: bold;
+          font-family: "Segoe UI Bold";
+          background: #fff;
+          color: #222;
+          &::before {
+            content: "\e157";
+            font-family: "Material Icons Round";
+            margin-right: 0.2rem;
+          }
         }
       }
     }
@@ -277,66 +280,80 @@ main {
     }
     &.expanded {
       overflow: visible;
-      img {
-        z-index: 9;
-      }
-      .info {
-        cursor: unset;
-        padding: 1.5rem;
-        background: #eee;
-        backdrop-filter: unset;
-        z-index: 9;
+      article.container {
+        position: fixed;
+        width: 80%;
+        left: 10%;
+        top: 80px;
+        height: calc(100% - 80px);
         display: flex;
-        flex-direction: column;
-        h3.title {
-          color: #222;
+        align-items: stretch;
+        z-index: 5;
+        img.mainImage {
+          width: auto;
+          height: 100%;
+          transition: $themeTransition;
         }
-        .closeBtn {
-          display: block;
-        }
-        .description {
-          font-size: 1.15rem;
-          width: calc(100% - 5rem);
-          white-space: normal;
-          background: transparent;
-          ul {
-            margin-bottom: 1rem;
-            li {
-              display: list-item;
-              margin-left: 1rem;
-              list-style: circle;
-              text-overflow: unset;
-              white-space: normal;
-              overflow: unset;
-            }
-            & + * {
-              display: block;
-            }
-          }
-        }
-        .price {
-          font-size: 1.5rem;
-          margin-top: 1rem;
-        }
-        .similar-container {
-          width: 100%;
-          display: flex;
-          align-items: center;
-          flex-wrap: wrap;
-          margin-top: auto;
-        }
-        a.domain {
+        .info {
           position: unset;
-          left: unset;
-          bottom: unset;
-          margin-top: 1rem;
-          border: 1px solid #ddd;
-          &:hover {
-            border-color: #aaa;
+          cursor: unset;
+          padding: 1.5rem;
+          background: #eee;
+          backdrop-filter: unset;
+          display: flex;
+          flex-direction: column;
+          height: 100%;
+          transition: $themeTransition;
+          h3.title {
+            color: #222;
           }
-        }
-        .readMore {
-          display: none;
+          .closeBtn {
+            display: block;
+          }
+          .description {
+            font-size: 1.15rem;
+            width: calc(100% - 5rem);
+            white-space: normal;
+            background: transparent;
+            ul {
+              margin-bottom: 1rem;
+              li {
+                display: list-item;
+                margin-left: 1rem;
+                list-style: circle;
+                text-overflow: unset;
+                white-space: normal;
+                overflow: unset;
+              }
+              & + * {
+                display: block;
+              }
+            }
+          }
+          .price {
+            font-size: 1.5rem;
+            margin-top: 1rem;
+          }
+          .similar-container {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-top: auto;
+          }
+          a.domain {
+            position: unset;
+            left: unset;
+            bottom: unset;
+            margin-top: 1rem;
+            border: 1px solid #ddd;
+            &:hover {
+              border-color: #aaa;
+            }
+          }
+          .readMore {
+            display: none;
+          }
         }
       }
     }
