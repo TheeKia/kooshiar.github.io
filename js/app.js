@@ -105,30 +105,70 @@ function addSimilars(container, data, closeElement) {
 }
 // Load Similar Posts
 function loadSimilars(container, refrence, closeElement) {
-  // TODO: refrence
   /**
    * @param container     :element  |   section_similar element
    * @param refrence      :object   |   single data object
    * @param closeElement  :element  |   close button for container element
    */
+  let similars;
 
-  let count = 0;
-  const similars = data.filter((item) => {
-    if (item["tags"] === null) return false;
-    if (count > 7) return false;
-    if (item["tags"].includes("white")) {
-      count++;
-      return true;
-    } else {
-      return false;
+  const pInfo = productType(refrence);
+  console.log(pInfo);
+
+  let similar = { 0: [], 1: [], 2: [], 3: [] };
+  //-----------------
+  data.map((item) => {
+    let score = 0;
+    let isType = false;
+    let isColor = false;
+    let isMaterial = false;
+    let isStyle = false;
+    let itemInfo = productType(item);
+    itemInfo["type"].forEach((word) => {
+      if (pInfo["type"].includes(word)) {
+        isType = true;
+      }
+    });
+    if (isType) {
+      itemInfo["color"].forEach((word) => {
+        if (pInfo["color"].includes(word)) {
+          isColor = true;
+        }
+      });
+      itemInfo["material"].forEach((word) => {
+        if (pInfo["material"].includes(word)) {
+          isMaterial = true;
+        }
+      });
+      itemInfo["styleType"].forEach((word) => {
+        if (pInfo["styleType"].includes(word)) {
+          isStyle = true;
+        }
+      });
+
+      if (isColor) score++;
+      if (isMaterial) score++;
+      if (isStyle) score++;
+
+      if (score === 3) {
+        similar[3].push(item);
+      } else if (score === 2) {
+        similar[2].push(item);
+      } else if (score === 1) {
+        similar[1].push(item);
+      } else {
+        similar[0].push(item);
+      }
     }
+
+    similars = similar[3].concat(similar[2], similar[1], similar[0]);
+    if (similars.length > 8) similars = similars.slice(0, 8);
   });
+  // TODO: Accuracy (length of similars)
   if (similars.length > 0) {
     addSimilars(container, similars, closeElement);
     container.classList.add("active");
   }
-
-  console.log(similars);
 }
 
 // Adding items to #mainContainer
@@ -221,7 +261,7 @@ function addItem(ref, columns, count) {
         div_info.style.opacity = 1;
 
         similarsTimeout = setTimeout(() => {
-          loadSimilars(section_similar, ref[count], div_close);
+          loadSimilars(section_similar, ref[count - 1], div_close);
         }, 300);
       }, 50);
     }, 300);
@@ -376,7 +416,6 @@ document.addEventListener("scroll", (ev) => {
     fetch(`http://xoosha.com/ws/1/test.php?offset=${offset}`)
       .then((res) => res.json())
       .then((newData) => {
-        console.log(`http://xoosha.com/ws/1/test.php?offset=${offset}`);
         data = data.concat(newData);
         addItem(data, columns, addedItems);
         offset += 60;
