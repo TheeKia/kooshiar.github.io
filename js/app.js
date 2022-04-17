@@ -1,70 +1,43 @@
+/**
+ * * Variables
+ */
+
+//    Loading
 let isLoading = true;
 let addedItems = 0;
 let searchResultsCount = 0;
 let isSearching = false;
+//    Timouts
 let loadingTimeout, refreshTimeout;
+//    Fetch data
 let data;
 let offset = 60;
+//    Columns
+let columns = [];
+let numberOfCols = Math.floor((window.innerWidth * 0.8) / 300);
 
-// * Header Elements
+/**
+ * * Elements
+ */
+
+// Header
 const header = select("#header");
 const El_searchInput = select("#searchInput");
 const Di_searchInput = new TInput(El_searchInput, true);
 const El_toggleTheme = select("#toggleTheme");
 const Di_toggleTheme = new BInput(El_toggleTheme, true);
-// * Body Elements
+// Body
 const overlay = select("#overlay");
 const mainContainer = select("#mainContainer");
 const resultsInfo = select("#resultsInfo");
 const nothing = select("#nothing");
-// * Footer Elements
+// Footer
 const footerLoading = select("#footer-loading--container");
 
-// * Search
-document.addEventListener("keydown", (ev) => {
-  if (ev.ctrlKey && ev.key === "k") {
-    ev.preventDefault();
-    El_searchInput.focus();
-  }
-});
-El_searchInput.addEventListener("focusout", (ev) => {
-  if (ev.target.value === "") {
-    isSearching = false;
-  }
-});
+/**
+ * * Toggle Theme
+ */
 
-El_searchInput.addEventListener("input", (ev) => {
-  isSearching = true;
-  if (ev.target.value == "") {
-    isSearching = false;
-  }
-  clearTimeout(refreshTimeout);
-  showFooterLoading(true);
-  columns.forEach((col) => {
-    col.querySelectorAll(".item").forEach((item) => {
-      item.remove();
-    });
-    col.innerHTML = "";
-  });
-  refreshTimeout = setTimeout(() => {
-    let newData = data.filter((item) =>
-      item["description"].toLowerCase().includes(ev.target.value.toLowerCase())
-    );
-    if (newData.length > 0) {
-      resultsInfo.innerHTML =
-        ev.target.value == "" ? "" : `${newData.length} Results found`;
-
-      addItem(newData, columns, searchResultsCount);
-      nothing.style.display = "none";
-    } else {
-      resultsInfo.innerHTML = "";
-      showFooterLoading(false);
-      nothing.style.display = "flex";
-    }
-  }, 100);
-});
-
-// *
 Di_toggleTheme.onClick(() => {
   icon = Di_toggleTheme.label.dataset.icon;
   if (icon === "brightness_3") {
@@ -86,10 +59,11 @@ Di_toggleTheme.onClick(() => {
   }
 });
 
-//// Fetch
+/**
+ * * Populating the HTML
+ */
 
-const columns = [];
-const numberOfCols = Math.floor((window.innerWidth * 0.8) / 300);
+// Creating Columns
 for (let i = 0; i < numberOfCols; i++) {
   const div_col = document.createElement("div");
   div_col.setAttribute("class", "col");
@@ -97,7 +71,14 @@ for (let i = 0; i < numberOfCols; i++) {
   mainContainer.appendChild(div_col);
 }
 
-function addItem(ref, output, count) {
+// Adding items to #mainContainer
+function addItem(ref, columns, count) {
+  /**
+   * @param ref       :array    | the data to display
+   * @param columns   :array    | columns array to select automatically
+   * @param count     :integer  | displayed elements count
+   */
+
   // * Creating div.item
   let img = new Image();
   img.src = ref[count]["image_url"];
@@ -134,7 +115,16 @@ function addItem(ref, output, count) {
   a_domain.href = ref[count]["canonical_url"];
   a_domain.innerHTML = ref[count]["domain"];
 
-  // ** On Click
+  div_info.appendChild(h3_title);
+  div_info.appendChild(div_close);
+  div_info.appendChild(p_des);
+  div_info.appendChild(p_price);
+  div_info.appendChild(div_more);
+  div_info.appendChild(a_domain);
+  div_item.appendChild(div_info);
+  div_item.appendChild(img);
+
+  // * On Click | Expand
   div_item.addEventListener("click", () => {
     if (div_item.classList.contains("expanded")) return;
     div_info.style.opacity = 0;
@@ -167,6 +157,7 @@ function addItem(ref, output, count) {
       }, 50);
     }, 300);
   });
+  // * Close
   div_close.addEventListener("click", () => {
     img.style.opacity = 0;
     img.style.left = 0;
@@ -195,20 +186,11 @@ function addItem(ref, output, count) {
     }, 300);
   });
 
-  div_info.appendChild(h3_title);
-  div_info.appendChild(div_close);
-  div_info.appendChild(p_des);
-  div_info.appendChild(p_price);
-  div_info.appendChild(div_more);
-  div_info.appendChild(a_domain);
-  div_item.appendChild(div_info);
-  div_item.appendChild(img);
-
-  // *
+  // * Select Column
   let minHeight = null;
   let theCol;
   img.onload = function () {
-    output.forEach((col) => {
+    columns.forEach((col) => {
       if (minHeight === null) {
         minHeight = col.offsetHeight;
         theCol = col;
@@ -233,9 +215,9 @@ function addItem(ref, output, count) {
       theCol.appendChild(div_item);
     }
 
-    // *
+    // Repeat
     count++;
-    if (count < ref.length) addItem(ref, output, count);
+    if (count < ref.length) addItem(ref, columns, count);
     else {
       clearTimeout(loadingTimeout);
       loadingTimeout = setTimeout(() => {
@@ -243,20 +225,75 @@ function addItem(ref, output, count) {
       }, 500);
       isLoading = false;
     }
-
+    // Show item
     setTimeout(() => {
       showItem(div_item);
-      // So the height doesn't depend on the image anymore
-      div_item.style.minHeight = div_item.offsetHeight + "px";
+      div_item.style.minHeight = div_item.offsetHeight + "px"; // So the height doesn't depend on the image anymore
     }, 300);
   };
 }
+
+/**
+ * * First Data Fetch
+ */
+
 fetch("http://xoosha.com/ws/1/test.php?offset=0")
   .then((res) => res.json())
   .then((newData) => {
     data = newData;
     addItem(data, columns, addedItems);
   });
+
+/**
+ * * Search
+ */
+
+El_searchInput.addEventListener("focusout", (ev) => {
+  if (ev.target.value === "") {
+    isSearching = false;
+  }
+});
+El_searchInput.addEventListener("input", (ev) => {
+  isSearching = true;
+  if (ev.target.value == "") {
+    isSearching = false;
+  }
+  clearTimeout(refreshTimeout);
+  showFooterLoading(true);
+  columns.forEach((col) => {
+    col.querySelectorAll(".item").forEach((item) => {
+      item.remove();
+    });
+    col.innerHTML = "";
+  });
+  refreshTimeout = setTimeout(() => {
+    let newData = data.filter((item) =>
+      item["description"].toLowerCase().includes(ev.target.value.toLowerCase())
+    );
+    if (newData.length > 0) {
+      resultsInfo.innerHTML =
+        ev.target.value == "" ? "" : `${newData.length} Results found`;
+
+      addItem(newData, columns, searchResultsCount);
+      nothing.style.display = "none";
+    } else {
+      resultsInfo.innerHTML = "";
+      showFooterLoading(false);
+      nothing.style.display = "flex";
+    }
+  }, 100);
+});
+// Ctrl+K
+document.addEventListener("keydown", (ev) => {
+  if (ev.ctrlKey && ev.key === "k") {
+    ev.preventDefault();
+    El_searchInput.focus();
+  }
+});
+
+/**
+ * * Infinite Scroll
+ */
 
 document.addEventListener("scroll", (ev) => {
   let bodyHeight = document.body.offsetHeight;
