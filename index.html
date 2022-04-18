@@ -8,7 +8,6 @@
   <link rel="stylesheet" href="css/style.min.css">
   <title>XOOSHA</title>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
-  <script src="./js/drs-inputs.js"></script>
   <script src="./js/tools.js"></script>
   <script src="./js/types.js"></script>
   <script src="./js/app.js" defer></script>
@@ -18,7 +17,7 @@
   <header id="header">
     <div id="searchBar">
       <h1 class="header-title">XOOSHA</h1>
-      <p class="tInput">
+      <p class="searchInput-container">
         <input type="text" id="searchInput" placeholder="Search" />
       </p>
       <div class="searchBar-r">
@@ -26,10 +25,14 @@
         <span class="material-icons-round">search</span>
       </div>
     </div>
-    <p class="bInput">
+    <p class="toggleTheme-container">
+      <button id="toggleTheme">brightness_3</button>
+      <!-- <label for="toggleTheme" data-icon="brightness_3"></label> -->
+    </p>
+    <!-- <p class="bInput">
       <button id="toggleTheme"></button>
       <label for="toggleTheme" data-icon="brightness_3"></label>
-    </p>
+    </p> -->
   </header>
 
   <div id="resultsInfo"></div>

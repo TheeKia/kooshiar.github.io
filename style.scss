@@ -1,7 +1,16 @@
-// @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;700&display=swap");
-@import "./css/drs-inputs";
 @import "./css/initial";
 @import "./css/segoe-ui";
+
+$light_inputBG: #eee;
+$light_inputBG_hover: #e5e5e5;
+$light_inputBG_focus: #e5e5e5;
+$light2_inputBG: #ddd;
+$light2_inputBG_hover: #d2d2d2;
+$light2_inputBG_focus: #ccc;
+
+$dark_inputBG: #1f1f1f;
+$dark_inputBG_hover: #282828;
+$dark_inputBG_focus: #282828;
 
 $themeTransition: all 0.3s ease-in-out;
 
@@ -17,6 +26,28 @@ body {
     background-color: #181818;
   }
   overflow-y: scroll;
+  // * SEARCHING
+  &.SEARCHING {
+    main {
+      .item {
+        article.container {
+          .info {
+            .similar-container {
+              .similar-item {
+                pointer-events: none;
+                cursor: default;
+              }
+              h4::after {
+                content: "Deactive while searching.";
+                font-size: 14px;
+                color: #888;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 }
 
 header {
@@ -43,10 +74,26 @@ header {
     display: flex;
     align-items: center;
     justify-content: center;
-    #searchInput {
-      font-size: 16px;
-      font-family: "Segoe UI Regular", sans-serif;
-      min-width: 300px;
+    .searchInput-container {
+      #searchInput {
+        font-size: 16px;
+        font-family: "Segoe UI Regular", sans-serif;
+        min-width: 300px;
+        padding: 0.5rem 1rem;
+        outline: none;
+        border: 2px solid transparent;
+        border-radius: 50px;
+        background: $light_inputBG;
+        transition: all 0.2s ease-in-out;
+        &:hover {
+          background: $light_inputBG_hover;
+        }
+        &:focus {
+          background: $light_inputBG_focus;
+          border-color: coral;
+          min-width: 380px;
+        }
+      }
     }
     .searchBar-r {
       display: flex;
@@ -58,7 +105,7 @@ header {
       transition: $themeTransition;
       .ctrlK {
         display: inline-flex;
-        background: #ddd;
+        background: #ccc;
         border-radius: 5px;
         font-size: 12px;
         margin-right: 0.5rem;
@@ -67,11 +114,29 @@ header {
       }
     }
   }
-  label[for="toggleTheme"] {
-    transition: $themeTransition;
+  .toggleTheme-container {
+    #toggleTheme {
+      outline: none;
+      background: #eee;
+      border: 2px solid transparent;
+      width: 42px;
+      height: 42px;
+      font-family: "Material Icons Round";
+      font-size: 18px;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: $themeTransition;
+      &:hover {
+        background: $light_inputBG_hover;
+        transition: none;
+      }
+      &:focus {
+        background: $light_inputBG_focus;
+        border-color: coral;
+      }
+    }
   }
 }
-
 // * Incomplete
 .DARKTHEME {
   color: #bbb;
@@ -81,10 +146,35 @@ header {
       color: #bbb;
     }
     #searchBar {
+      .searchInput-container {
+        #searchInput {
+          background: $dark_inputBG;
+          color: #eee;
+          &:hover {
+            background: $dark_inputBG_hover;
+          }
+          &:focus {
+            background: $dark_inputBG_focus;
+            border-color: #5f4c44;
+          }
+        }
+      }
       .searchBar-r {
         color: #bbb;
         .ctrlK {
-          background: #222;
+          background: #444;
+        }
+      }
+    }
+    .toggleTheme-container {
+      #toggleTheme {
+        background: $dark_inputBG;
+        &:hover {
+          background: $dark_inputBG_hover;
+        }
+        &:focus {
+          background: $dark_inputBG_focus;
+          border-color: #5f4c44;
         }
       }
     }
@@ -95,7 +185,6 @@ header {
 #resultsInfo {
   width: 80%;
   margin: 0 auto;
-  // text-align: center;
 }
 #nothing {
   width: 80%;
@@ -114,7 +203,6 @@ main {
   align-items: flex-start;
   justify-content: space-between;
   transition: $themeTransition;
-  // min-height: calc(100vh - 15rem);
   .col {
     display: flex;
     flex-direction: column;
@@ -154,6 +242,7 @@ main {
         background: rgba(50, 50, 50, 0.6);
         opacity: 0;
         cursor: zoom-in;
+        overflow: hidden;
         transition: 0.2s ease-in-out;
 
         h3.title {
@@ -225,25 +314,79 @@ main {
               content: "";
               position: absolute;
               top: 50%;
-              left: 150px;
-              width: calc(100% - 150px);
+              left: 170px;
+              width: calc(100% - 170px);
               height: 2px;
               background-color: #aaa;
             }
           }
-          .similar-item {
-            width: 150px;
-            height: 150px;
-            opacity: 0;
-            transform: translateY(20px);
-            cursor: pointer;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            margin: 0.2rem;
-            transition: 0.3s ease-in-out;
-            &.active {
-              opacity: 1;
-              transform: translateY(0);
+          .similar-grid {
+            position: relative;
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            overflow-x: scroll;
+            overflow-y: visible;
+            padding-bottom: 0.5rem;
+            .similar-scrollRight,
+            .similar-scrollLeft {
+              position: fixed;
+              top: 17px;
+              background: $light2_inputBG;
+              width: 30px;
+              height: 30px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              border-radius: 20px;
+              cursor: pointer;
+              &:hover {
+                background: $light2_inputBG_hover;
+              }
+              &:active {
+                background: $light2_inputBG_focus;
+              }
+              &::after {
+                font-family: "Material Icons Round";
+              }
+            }
+            .similar-scrollRight {
+              border-left: 1px solid #aaa;
+              border-radius: 0 20px 20px 0;
+              right: 0;
+              &::after {
+                content: "\e409";
+              }
+            }
+            .similar-scrollLeft {
+              border-radius: 20px 0 0 20px;
+              right: 30px;
+              &::after {
+                content: "\e408";
+              }
+            }
+            &::-webkit-scrollbar {
+              height: 5px;
+            }
+            &::-webkit-scrollbar-thumb {
+              background: #888;
+            }
+            &::-webkit-scrollbar-track {
+              background: #ccc;
+            }
+            .similar-item {
+              width: 150px;
+              height: 150px;
+              opacity: 0;
+              transform: translateX(-20px);
+              cursor: pointer;
+              border: 1px solid #ddd;
+              border-radius: 5px;
+              margin: 0.2rem;
+              transition: 0.3s ease-in-out;
+              &.active {
+                opacity: 1;
+                transform: translateX(0);
+              }
             }
           }
           &.active {
@@ -342,6 +485,13 @@ main {
             align-items: center;
             flex-wrap: wrap;
             margin-top: auto;
+            h4 {
+              &::after {
+                content: "Based on product type (color, material and style also take part)";
+                font-size: 14px;
+                color: #888;
+              }
+            }
           }
           a.domain {
             position: unset;

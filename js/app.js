@@ -1,6 +1,5 @@
 // TODO: back button
 // TODO: save default theme
-
 const searchDelay = 400;
 /**
  * * Variables
@@ -27,9 +26,8 @@ let numberOfCols = Math.floor((window.innerWidth * 0.8) / 300);
 // Header
 const header = select("#header");
 const El_searchInput = select("#searchInput");
-const Di_searchInput = new TInput(El_searchInput, true);
 const El_toggleTheme = select("#toggleTheme");
-const Di_toggleTheme = new BInput(El_toggleTheme, true);
+// const Di_toggleTheme = new BInput(El_toggleTheme, true);
 // Body
 const overlay = select("#overlay");
 const mainContainer = select("#mainContainer");
@@ -42,23 +40,21 @@ const footerLoading = select("#footer-loading--container");
  * * Toggle Theme
  */
 
-Di_toggleTheme.onClick(() => {
-  icon = Di_toggleTheme.label.dataset.icon;
+El_toggleTheme.addEventListener("click", () => {
+  icon = El_toggleTheme.innerHTML;
   if (icon === "brightness_3") {
-    Di_toggleTheme.label.style.color = "transparent";
+    El_toggleTheme.style.color = "transparent";
     setTimeout(() => {
-      Di_toggleTheme.label.style.color = "#bbb";
-      Di_toggleTheme.label.dataset.icon = "light_mode";
+      El_toggleTheme.style.color = "#bbb";
+      El_toggleTheme.innerHTML = "light_mode";
     }, 300);
-    Input.darkThemeAll();
     setDarkTheme(true);
   } else {
-    Di_toggleTheme.label.style.color = "transparent";
+    El_toggleTheme.style.color = "transparent";
     setTimeout(() => {
-      Di_toggleTheme.label.style.color = "#222";
-      Di_toggleTheme.label.dataset.icon = "brightness_3";
+      El_toggleTheme.style.color = "#222";
+      El_toggleTheme.innerHTML = "brightness_3";
     }, 300);
-    Input.darkThemeAll(false);
     setDarkTheme(false);
   }
 });
@@ -74,11 +70,33 @@ for (let i = 0; i < numberOfCols; i++) {
   columns.push(div_col);
   mainContainer.appendChild(div_col);
 }
+
 // Add Similars
 function addSimilars(container, data, closeElement) {
   let interval;
   let i = 0;
   let elements = [];
+  let scrollX = 0;
+  const div_grid = document.createElement("div");
+  div_grid.setAttribute("class", "similar-grid");
+  const div_scrollLeft = document.createElement("div");
+  div_scrollLeft.setAttribute("class", "similar-scrollLeft");
+  const div_scrollRight = document.createElement("div");
+  div_scrollRight.setAttribute("class", "similar-scrollRight");
+  div_grid.appendChild(div_scrollLeft);
+  div_grid.appendChild(div_scrollRight);
+  div_scrollRight.addEventListener("click", () => {
+    if (scrollX + 320 > div_grid.scrollWidth - div_grid.offsetWidth)
+      scrollX = div_grid.scrollWidth - div_grid.offsetWidth;
+    else scrollX += 320;
+    div_grid.scrollLeft = scrollX;
+  });
+  div_scrollLeft.addEventListener("click", () => {
+    if (scrollX - 320 < 0) scrollX = 0;
+    else scrollX -= 320;
+    div_grid.scrollLeft = scrollX;
+  });
+
   data.forEach((item) => {
     const div_element = document.createElement("div");
     div_element.setAttribute("class", "similar-item");
@@ -95,15 +113,16 @@ function addSimilars(container, data, closeElement) {
     });
 
     elements.push(div_element);
-    container.appendChild(div_element);
+    div_grid.appendChild(div_element);
   });
+  container.appendChild(div_grid);
   interval = setInterval(() => {
     if (i === elements.length - 1) clearInterval(interval);
     elements[i].classList.add("active");
     i++;
   }, 100);
 }
-// Load Similar Posts
+// Load Similar Products
 function loadSimilars(container, refrence, closeElement) {
   /**
    * @param container     :element  |   section_similar element
@@ -214,10 +233,10 @@ function addItem(ref, columns, count) {
   const p_price = document.createElement("p");
   p_price.setAttribute("class", "price");
   p_price.innerHTML = ref[count]["price"];
-  // * Similar Posts
+  // * Similar Products
   const section_similar = document.createElement("section");
   section_similar.setAttribute("class", "similar-container");
-  section_similar.innerHTML = "<h4>Similar Posts</h4>";
+  section_similar.innerHTML = "<h4>Similar Products</h4>";
   // * Domain
   const a_domain = document.createElement("a");
   a_domain.setAttribute("class", "domain");
@@ -360,12 +379,15 @@ fetch("http://xoosha.com/ws/1/test.php?offset=0")
 El_searchInput.addEventListener("focusout", (ev) => {
   if (ev.target.value === "") {
     isSearching = false;
+    document.body.classList.remove("SEARCHING");
   }
 });
 El_searchInput.addEventListener("input", (ev) => {
   isSearching = true;
+  document.body.classList.add("SEARCHING");
   if (ev.target.value == "") {
     isSearching = false;
+    document.body.classList.remove("SEARCHING");
   }
   clearTimeout(refreshTimeout);
   showFooterLoading(true);
