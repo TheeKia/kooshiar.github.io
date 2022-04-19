@@ -1,6 +1,7 @@
-// TODO: back button
 // TODO: save default theme
+// TODO: history on search
 const searchDelay = 400;
+const minColWidth = 250;
 /**
  * * Variables
  */
@@ -10,6 +11,7 @@ let isLoading = true;
 let addedItems = 0;
 let searchResultsCount = 0;
 let isSearching = false;
+let isShowingFavorites = false;
 //    Timouts
 let loadingTimeout, refreshTimeout, similarsTimeout;
 //    Fetch data
@@ -17,7 +19,21 @@ let data;
 let offset = 60;
 //    Columns
 let columns = [];
-let numberOfCols = Math.floor((window.innerWidth * 0.8) / 300);
+let numberOfCols = Math.floor((window.innerWidth * 0.8) / minColWidth);
+// History
+let preserveHistory = false;
+let backHistory = false;
+let expandHistory = [];
+// Likes
+let likes = [];
+if (
+  window.localStorage.getItem("likes") &&
+  window.localStorage.getItem("likes").length > 0
+) {
+  likes = window.localStorage.getItem("likes").split(",");
+} else {
+  likes = [];
+}
 
 /**
  * * Elements
@@ -27,12 +43,13 @@ let numberOfCols = Math.floor((window.innerWidth * 0.8) / 300);
 const header = select("#header");
 const El_searchInput = select("#searchInput");
 const El_toggleTheme = select("#toggleTheme");
-// const Di_toggleTheme = new BInput(El_toggleTheme, true);
+const Btn_favorites = select("#favorites");
 // Body
 const overlay = select("#overlay");
 const mainContainer = select("#mainContainer");
 const resultsInfo = select("#resultsInfo");
 const nothing = select("#nothing");
+const prevHistory = select("#prevHistory");
 // Footer
 const footerLoading = select("#footer-loading--container");
 
@@ -41,21 +58,61 @@ const footerLoading = select("#footer-loading--container");
  */
 
 El_toggleTheme.addEventListener("click", () => {
-  icon = El_toggleTheme.innerHTML;
+  icon = El_toggleTheme.dataset.icon;
   if (icon === "brightness_3") {
     El_toggleTheme.style.color = "transparent";
     setTimeout(() => {
       El_toggleTheme.style.color = "#bbb";
-      El_toggleTheme.innerHTML = "light_mode";
+      El_toggleTheme.dataset.icon = "light_mode";
     }, 300);
     setDarkTheme(true);
   } else {
     El_toggleTheme.style.color = "transparent";
     setTimeout(() => {
       El_toggleTheme.style.color = "#222";
-      El_toggleTheme.innerHTML = "brightness_3";
+      El_toggleTheme.dataset.icon = "brightness_3";
     }, 300);
     setDarkTheme(false);
+  }
+});
+
+/**
+ * * Favorites List
+ */
+Btn_favorites.addEventListener("click", () => {
+  let newData;
+  showFooterLoading(true);
+  isLoading = true;
+  columns.forEach((col) => {
+    col.querySelectorAll(".item").forEach((item) => {
+      item.remove();
+    });
+    col.innerHTML = "";
+  });
+  if (Btn_favorites.classList.contains("active")) {
+    isShowingFavorites = false;
+    document.body.classList.remove("FAVORITES");
+    Btn_favorites.classList.remove("active");
+    Btn_favorites.dataset.icon = "favorite_border";
+    Btn_favorites.innerHTML = "Show favorites";
+    newData = data;
+  } else {
+    isShowingFavorites = true;
+    document.body.classList.add("FAVORITES");
+    Btn_favorites.classList.add("active");
+    Btn_favorites.dataset.icon = "favorite";
+    Btn_favorites.innerHTML = "Hide favorites";
+    newData = data.filter((item) => likes.includes(item["page_id"]));
+  }
+  if (newData.length > 0) {
+    resultsInfo.innerHTML = "";
+    addItem(newData, columns, searchResultsCount);
+    nothing.style.display = "none";
+  } else {
+    resultsInfo.innerHTML =
+      '<p style="margin-top: 5%; margin-bottom: -5%;width: 100%; text-align: center">First add some products to favorites</p>';
+    showFooterLoading(false);
+    nothing.style.display = "flex";
   }
 });
 
@@ -63,10 +120,54 @@ El_toggleTheme.addEventListener("click", () => {
  * * Populating the HTML
  */
 
+// History Logic
+function changeHistory(comand, id = null) {
+  /**
+   * @param comand add | remove | clear
+   */
+  if (comand === "add") {
+    if (id === null) throw 'id not included in "add" mode';
+    else expandHistory.push(id);
+  } else if (comand === "remove") {
+    expandHistory.pop();
+  } else if (comand === "clear") {
+    expandHistory = [];
+  }
+
+  if (expandHistory.length > 1) {
+    document.body.classList.add("HISTORY");
+  } else {
+    document.body.classList.remove("HISTORY");
+  }
+}
+prevHistory.addEventListener("click", (ev) => {
+  changeHistory("remove");
+  preserveHistory = true;
+  document.querySelector(".item.expanded .closeBtn").click();
+  setTimeout(() => {
+    backHistory = true;
+    document.getElementById(expandHistory[expandHistory.length - 1]).click();
+  }, 300);
+});
+
+window.onresize = (ev) => {
+  numberOfCols = Math.floor((window.innerWidth * 0.8) / minColWidth);
+  columns = [];
+  mainContainer.innerHTML = "";
+  for (let i = 0; i < numberOfCols; i++) {
+    const div_col = document.createElement("div");
+    div_col.setAttribute("class", "col");
+    div_col.style.width = 95 / numberOfCols + "%";
+    columns.push(div_col);
+    mainContainer.appendChild(div_col);
+  }
+  addItem(data, columns, addedItems);
+};
 // Creating Columns
 for (let i = 0; i < numberOfCols; i++) {
   const div_col = document.createElement("div");
   div_col.setAttribute("class", "col");
+  div_col.style.width = 95 / numberOfCols + "%";
   columns.push(div_col);
   mainContainer.appendChild(div_col);
 }
@@ -106,6 +207,7 @@ function addSimilars(container, data, closeElement) {
     div_element.style.backgroundPosition = "center";
     div_element.addEventListener("click", () => {
       div_element.style.transform = "scale(2)";
+      preserveHistory = true;
       closeElement.click();
       setTimeout(() => {
         document.getElementById(item["page_id"]).click();
@@ -132,7 +234,6 @@ function loadSimilars(container, refrence, closeElement) {
   let similars;
 
   const pInfo = productType(refrence);
-  console.log(pInfo);
 
   let similar = { 0: [], 1: [], 2: [], 3: [] };
   //-----------------
@@ -192,7 +293,6 @@ function loadSimilars(container, refrence, closeElement) {
 
 // Adding items to #mainContainer
 function addItem(ref, columns, count) {
-  //TODO: Optional ID
   /**
    * @param ref         :array    |   the data to display
    * @param columns     :array    |   columns array to select automatically
@@ -241,7 +341,11 @@ function addItem(ref, columns, count) {
   const a_domain = document.createElement("a");
   a_domain.setAttribute("class", "domain");
   a_domain.href = ref[count]["canonical_url"];
-  a_domain.innerHTML = ref[count]["domain"];
+  a_domain.innerHTML = `<span>${ref[count]["domain"]}</span>`;
+  // * Domain
+  const btn_like = document.createElement("button");
+  btn_like.setAttribute("class", "like");
+  if (likes.includes(ref[count]["page_id"])) btn_like.classList.add("LIKED");
 
   div_info.appendChild(h3_title);
   div_info.appendChild(div_close);
@@ -250,14 +354,39 @@ function addItem(ref, columns, count) {
   div_info.appendChild(div_more);
   div_info.appendChild(section_similar);
   div_info.appendChild(a_domain);
+  div_info.appendChild(btn_like);
   article_container.appendChild(img);
   article_container.appendChild(div_info);
   div_item.appendChild(article_container);
 
+  // * Like Event
+  btn_like.addEventListener("click", (ev) => {
+    ev.preventDefault();
+    if (btn_like.classList.contains("LIKED")) {
+      if (likes.includes(ref[count - 1]["page_id"])) {
+        likes.splice(likes.indexOf(ref[count - 1]["page_id"]), 1);
+        window.localStorage.setItem("likes", likes);
+        btn_like.classList.remove("LIKED");
+      }
+    } else {
+      if (!likes.includes(ref[count - 1]["page_id"])) {
+        likes.push(ref[count - 1]["page_id"]);
+        window.localStorage.setItem("likes", likes);
+        btn_like.classList.add("LIKED");
+      }
+    }
+  });
+
   // * On Click | Expand
-  div_item.addEventListener("click", () => {
-    if (div_item.classList.contains("expanded")) return;
+  div_item.addEventListener("click", (ev) => {
+    if (div_item.classList.contains("expanded")) return; // return if already expanded
+    if (ev.target.classList.contains("domain")) return; // return if link
+    else if (ev.target.classList.contains("like")) return; // return if like
+
     clearTimeout(similarsTimeout);
+    document.body.classList.add("EXPANDED");
+    if (!backHistory) changeHistory("add", ref[count - 1]["page_id"]);
+    backHistory = false;
 
     img.style.opacity = 0;
     div_info.style.opacity = 0;
@@ -287,6 +416,9 @@ function addItem(ref, columns, count) {
   });
   // * Close
   div_close.addEventListener("click", () => {
+    if (!preserveHistory) changeHistory("clear");
+    preserveHistory = false;
+    document.body.classList.remove("EXPANDED");
     img.style.opacity = 0;
     img.style.transform = "translateX(-25px)";
     div_info.style.opacity = 0;
@@ -337,6 +469,10 @@ function addItem(ref, columns, count) {
           .toLowerCase()
           .includes(El_searchInput.value.toLowerCase())
       ) {
+        theCol.appendChild(div_item);
+      }
+    } else if (isShowingFavorites) {
+      if (likes.includes(ref[count]["page_id"])) {
         theCol.appendChild(div_item);
       }
     } else {
@@ -430,6 +566,7 @@ document.addEventListener("scroll", (ev) => {
   let bodyHeight = document.body.offsetHeight;
   if (
     !isSearching &&
+    !isShowingFavorites &&
     !isLoading &&
     bodyHeight - window.scrollY < window.innerHeight + 200
   ) {

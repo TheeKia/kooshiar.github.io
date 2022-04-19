@@ -25,22 +25,20 @@
         <span class="material-icons-round">search</span>
       </div>
     </div>
-    <p class="toggleTheme-container">
-      <button id="toggleTheme">brightness_3</button>
-      <!-- <label for="toggleTheme" data-icon="brightness_3"></label> -->
+    <p class="right-container">
+      <button class="btn" id="favorites" data-icon="favorite_border" style="margin-right: 1rem;">Show favorites</button>
+      <button class="btn singleIcon" id="toggleTheme" data-icon="brightness_3"></button>
     </p>
-    <!-- <p class="bInput">
-      <button id="toggleTheme"></button>
-      <label for="toggleTheme" data-icon="brightness_3"></label>
-    </p> -->
   </header>
+
+  <div id="prevHistory" title="Previous product">navigate_before</div>
 
   <div id="resultsInfo"></div>
   <div id="nothing" style="display: none;">
     <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
     <lottie-player src="https://assets8.lottiefiles.com/packages/lf20_7fwvvesa.json" background="transparent" speed="1"
-      style="width: 300px; height: 300px;" loop autoplay></lottie-player>
-    <h2 style="margin-right: 2rem;"><span style="color: red;">No</span> Result found!</h2>
+      style="width: 300px; height: 300px;margin-left: 36px;" loop autoplay></lottie-player>
+    <h2><span style="color: red;">No</span> Result found!</h2>
   </div>
   <main id="mainContainer"></main>
 
