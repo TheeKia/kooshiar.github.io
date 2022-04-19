@@ -1,7 +1,7 @@
 // TODO: save default theme
 // TODO: history on search
 const searchDelay = 400;
-const minColWidth = 250;
+const minColWidth = 230;
 /**
  * * Variables
  */
@@ -16,7 +16,7 @@ let isShowingFavorites = false;
 let loadingTimeout, refreshTimeout, similarsTimeout;
 //    Fetch data
 let data;
-let offset = 60;
+let offset = 80;
 //    Columns
 let columns = [];
 let numberOfCols = Math.floor((window.innerWidth * 0.8) / minColWidth);
@@ -33,6 +33,15 @@ if (
   likes = window.localStorage.getItem("likes").split(",");
 } else {
   likes = [];
+}
+
+function emptyColumns() {
+  columns.forEach((col) => {
+    col.querySelectorAll(".item").forEach((item) => {
+      item.remove();
+    });
+    col.innerHTML = "";
+  });
 }
 
 /**
@@ -83,25 +92,20 @@ Btn_favorites.addEventListener("click", () => {
   let newData;
   showFooterLoading(true);
   isLoading = true;
-  columns.forEach((col) => {
-    col.querySelectorAll(".item").forEach((item) => {
-      item.remove();
-    });
-    col.innerHTML = "";
-  });
+  emptyColumns();
   if (Btn_favorites.classList.contains("active")) {
     isShowingFavorites = false;
     document.body.classList.remove("FAVORITES");
     Btn_favorites.classList.remove("active");
-    Btn_favorites.dataset.icon = "favorite_border";
-    Btn_favorites.innerHTML = "Show favorites";
+    Btn_favorites.dataset.icon = "bookmark_border";
+    Btn_favorites.innerHTML = "Show saves";
     newData = data;
   } else {
     isShowingFavorites = true;
     document.body.classList.add("FAVORITES");
     Btn_favorites.classList.add("active");
-    Btn_favorites.dataset.icon = "favorite";
-    Btn_favorites.innerHTML = "Hide favorites";
+    Btn_favorites.dataset.icon = "bookmark";
+    Btn_favorites.innerHTML = "Hide saves";
     newData = data.filter((item) => likes.includes(item["page_id"]));
   }
   if (newData.length > 0) {
@@ -150,14 +154,17 @@ prevHistory.addEventListener("click", (ev) => {
   }, 300);
 });
 
+let windowWidth = window.innerWidth;
 window.onresize = (ev) => {
-  numberOfCols = Math.floor((window.innerWidth * 0.8) / minColWidth);
+  if (windowWidth === window.innerWidth) return;
+  windowWidth = window.innerWidth;
+  numberOfCols = Math.floor((windowWidth * 0.8) / minColWidth);
   columns = [];
   mainContainer.innerHTML = "";
   for (let i = 0; i < numberOfCols; i++) {
     const div_col = document.createElement("div");
     div_col.setAttribute("class", "col");
-    div_col.style.width = 95 / numberOfCols + "%";
+    div_col.style.width = 94 / numberOfCols + "%";
     columns.push(div_col);
     mainContainer.appendChild(div_col);
   }
@@ -167,7 +174,7 @@ window.onresize = (ev) => {
 for (let i = 0; i < numberOfCols; i++) {
   const div_col = document.createElement("div");
   div_col.setAttribute("class", "col");
-  div_col.style.width = 95 / numberOfCols + "%";
+  div_col.style.width = 94 / numberOfCols + "%";
   columns.push(div_col);
   mainContainer.appendChild(div_col);
 }
@@ -233,7 +240,7 @@ function loadSimilars(container, refrence, closeElement) {
    */
   let similars;
 
-  const pInfo = productType(refrence);
+  const pInfo = refrence["type"];
 
   let similar = { 0: [], 1: [], 2: [], 3: [] };
   //-----------------
@@ -243,12 +250,13 @@ function loadSimilars(container, refrence, closeElement) {
     let isColor = false;
     let isMaterial = false;
     let isStyle = false;
-    let itemInfo = productType(item);
-    itemInfo["type"].forEach((word) => {
-      if (pInfo["type"].includes(word)) {
-        isType = true;
-      }
-    });
+    let itemInfo = item["type"];
+    if (itemInfo["type"].length > 0)
+      itemInfo["type"].forEach((word) => {
+        if (pInfo["type"].includes(word)) {
+          isType = true;
+        }
+      });
     if (isType) {
       itemInfo["color"].forEach((word) => {
         if (pInfo["color"].includes(word)) {
@@ -449,36 +457,54 @@ function addItem(ref, columns, count) {
   // * Select Column
   let minHeight = null;
   let theCol;
-  img.onload = function () {
-    columns.forEach((col) => {
-      if (minHeight === null) {
-        minHeight = col.offsetHeight;
-        theCol = col;
-      } else {
-        if (col.offsetHeight < minHeight) {
+  try {
+    img.onload = function () {
+      columns.forEach((col) => {
+        if (minHeight === null) {
           minHeight = col.offsetHeight;
           theCol = col;
+        } else {
+          if (col.offsetHeight < minHeight) {
+            minHeight = col.offsetHeight;
+            theCol = col;
+          }
         }
-      }
-    });
+      });
 
-    // * If search query exists
-    if (isSearching) {
-      if (
-        ref[count]["description"]
-          .toLowerCase()
-          .includes(El_searchInput.value.toLowerCase())
-      ) {
+      // * If search query exists
+      if (isSearching) {
+        if (
+          ref[count]["description"]
+            .toLowerCase()
+            .includes(El_searchInput.value.toLowerCase())
+        ) {
+          theCol.appendChild(div_item);
+        }
+      } else if (isShowingFavorites) {
+        if (likes.includes(ref[count]["page_id"])) {
+          theCol.appendChild(div_item);
+        }
+      } else {
         theCol.appendChild(div_item);
       }
-    } else if (isShowingFavorites) {
-      if (likes.includes(ref[count]["page_id"])) {
-        theCol.appendChild(div_item);
-      }
-    } else {
-      theCol.appendChild(div_item);
-    }
 
+      // Repeat
+      count++;
+      if (count < ref.length) addItem(ref, columns, count);
+      else {
+        clearTimeout(loadingTimeout);
+        loadingTimeout = setTimeout(() => {
+          showFooterLoading(false);
+        }, 500);
+        isLoading = false;
+      }
+      // Show item
+      setTimeout(() => {
+        showItem(div_item);
+        div_item.style.minHeight = div_item.offsetHeight + "px"; // So the height doesn't depend on the image anymore
+      }, 300);
+    };
+  } catch {
     // Repeat
     count++;
     if (count < ref.length) addItem(ref, columns, count);
@@ -489,22 +515,22 @@ function addItem(ref, columns, count) {
       }, 500);
       isLoading = false;
     }
-    // Show item
-    setTimeout(() => {
-      showItem(div_item);
-      div_item.style.minHeight = div_item.offsetHeight + "px"; // So the height doesn't depend on the image anymore
-    }, 300);
-  };
+  }
 }
 
 /**
  * * First Data Fetch
  */
-
-fetch("http://xoosha.com/ws/1/test.php?offset=0")
+let i = 0;
+fetch("http://xoosha.com/ws/1/test.php?offset=20")
   .then((res) => res.json())
   .then((newData) => {
-    data = newData;
+    data = newData.map((product) => {
+      let type = productType(product);
+      product["type"] = type;
+      return product;
+    });
+
     addItem(data, columns, addedItems);
   });
 
@@ -527,12 +553,7 @@ El_searchInput.addEventListener("input", (ev) => {
   }
   clearTimeout(refreshTimeout);
   showFooterLoading(true);
-  columns.forEach((col) => {
-    col.querySelectorAll(".item").forEach((item) => {
-      item.remove();
-    });
-    col.innerHTML = "";
-  });
+  emptyColumns();
   refreshTimeout = setTimeout(() => {
     let newData = data.filter((item) =>
       item["description"].toLowerCase().includes(ev.target.value.toLowerCase())

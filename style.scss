@@ -170,7 +170,7 @@ header {
     #favorites {
       &.active {
         &::after {
-          color: red;
+          color: #222;
         }
       }
     }
@@ -313,7 +313,8 @@ main {
     margin-bottom: 1rem;
     display: flex;
     justify-content: center;
-    border-radius: 5px;
+    border-radius: 20px;
+    border: 1px solid #ccc; //?
     overflow: hidden;
     opacity: 0;
     transition: $themeTransition;
@@ -530,20 +531,20 @@ main {
           align-items: center;
           justify-content: center;
           border-radius: 5px;
-          font-size: 16px;
+          font-size: 18px;
           background: #fff;
           color: #222;
           border: none;
           outline: none;
           cursor: pointer;
           &::before {
-            content: "\e87e";
+            content: "\e867";
             font-family: "Material Icons Round";
           }
           &.LIKED {
             &::before {
-              content: "\e87d";
-              color: red;
+              content: "\e599";
+              color: deepskyblue;
             }
           }
         }
