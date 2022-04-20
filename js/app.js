@@ -1,7 +1,8 @@
-// TODO: save default theme
-// TODO: history on search
+// TODO: disable search while viewing saved products
 const searchDelay = 400;
-const minColWidth = 230;
+let windowWidth = window.innerWidth;
+let minColWidth = windowWidth > 430 ? 230 : 120;
+
 /**
  * * Variables
  */
@@ -58,6 +59,7 @@ const header = select("#header");
 const El_searchInput = select("#searchInput");
 const El_toggleTheme = select("#toggleTheme");
 const Btn_favorites = select("#favorites");
+const mobileSearchIcon = select("#mobileSearchIcon");
 // Body
 const overlay = select("#overlay");
 const mainContainer = select("#mainContainer");
@@ -66,6 +68,25 @@ const nothing = select("#nothing");
 const prevHistory = select("#prevHistory");
 // Footer
 const footerLoading = select("#footer-loading--container");
+
+/**
+ * * Mobile Search Button
+ */
+
+mobileSearchIcon.addEventListener("click", () => {
+  if (document.body.classList.contains("MOBILE_SEARCH")) {
+    document.body.classList.remove("MOBILE_SEARCH");
+    setTimeout(() => {
+      El_searchInput.style.display = "none";
+    }, 300);
+  } else {
+    El_searchInput.style.display = "flex";
+    setTimeout(() => {
+      document.body.classList.add("MOBILE_SEARCH");
+      El_searchInput.focus();
+    }, 50);
+  }
+});
 
 /**
  * * Toggle Theme
@@ -169,10 +190,10 @@ prevHistory.addEventListener("click", (ev) => {
   }, 300);
 });
 
-let windowWidth = window.innerWidth;
 window.onresize = (ev) => {
   if (windowWidth === window.innerWidth) return;
   windowWidth = window.innerWidth;
+  minColWidth = windowWidth > 430 ? 230 : 120;
   numberOfCols = Math.floor((windowWidth * 0.8) / minColWidth);
   columns = [];
   mainContainer.innerHTML = "";
@@ -376,15 +397,17 @@ function addItem(ref, columns, count) {
 
   div_info.appendChild(h3_title);
   div_info.appendChild(span_time);
-  div_info.appendChild(div_close);
   div_info.appendChild(p_des);
   div_info.appendChild(p_price);
   div_info.appendChild(div_more);
   div_info.appendChild(section_similar);
   div_info.appendChild(a_domain);
   div_info.appendChild(btn_like);
+
+  article_container.appendChild(div_close);
   article_container.appendChild(img);
   article_container.appendChild(div_info);
+
   div_item.appendChild(article_container);
 
   // * Like Event
@@ -418,6 +441,7 @@ function addItem(ref, columns, count) {
 
     img.style.opacity = 0;
     div_info.style.opacity = 0;
+    div_close.style.opacity = 0;
 
     setTimeout(() => {
       div_item.classList.add("expanded");
@@ -426,15 +450,20 @@ function addItem(ref, columns, count) {
       img.style.transform = "translateX(-25px)";
       div_info.style.transition = "all 0s";
       div_info.style.transform = "translateX(25px)";
+      div_close.style.transition = "all 0s";
+      div_close.style.transform = "translateX(25px)";
 
       setTimeout(() => {
         img.style.transition = "all 0.3s ease-in-out";
         div_info.style.transition = "all 0.3s ease-in-out";
+        div_close.style.transition = "all 0.3s ease-in-out";
 
         img.style.opacity = 1;
         img.style.transform = "translateX(0)";
         div_info.style.transform = "translateX(0)";
         div_info.style.opacity = 1;
+        div_close.style.transform = "translateX(0)";
+        div_close.style.opacity = 1;
 
         similarsTimeout = setTimeout(() => {
           loadSimilars(section_similar, ref[count - 1], div_close);
@@ -447,8 +476,11 @@ function addItem(ref, columns, count) {
     if (!preserveHistory) changeHistory("clear");
     preserveHistory = false;
     document.body.classList.remove("EXPANDED");
+
     img.style.opacity = 0;
     img.style.transform = "translateX(-25px)";
+    div_close.style.opacity = 0;
+    div_close.style.transform = "translateX(25px)";
     div_info.style.opacity = 0;
     div_info.style.transform = "translateX(25px)";
 
@@ -457,15 +489,19 @@ function addItem(ref, columns, count) {
 
       img.style.transition = "all 0s";
       div_info.style.transition = "all 0s";
+      div_close.style.transition = "all 0s";
 
       img.style.transform = "translateX(0)";
       div_info.style.transform = "translateX(0)";
+      div_close.style.transform = "translateX(0)";
 
       setTimeout(() => {
         img.style.transition = "all 0.3s ease-in-out";
         div_info.style.transition = "all 0.3s ease-in-out";
+        div_close.style.transition = "all 0.3s ease-in-out";
         img.style.opacity = 1;
         div_info.style.opacity = "";
+        div_close.style.opacity = "";
       }, 50);
       section_similar.classList.remove("active");
       section_similar.querySelectorAll(".similar-item").forEach((item) => {

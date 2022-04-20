@@ -73,26 +73,29 @@ header {
   left: 0;
   width: 100%;
   padding: 1rem 10%;
-  // background: rgba(255, 255, 255, 0.8);
   background: url(../img/bg.png) repeat;
   backdrop-filter: blur(10px) grayscale(1);
-  box-shadow: 2px 0 8px rgba(20, 20, 20, 0.2);
-  display: flex;
+  box-shadow: 0 2px 8px rgba(20, 20, 20, 0.2);
+  // !
+  display: grid;
   align-items: center;
-  justify-content: space-between;
+  grid-template-columns: 110px 350px auto 200px;
+  // !
   transition: $themeTransition;
   transition: border-right 0s;
   z-index: 10;
   .header-title {
+    width: fit-content;
     font-weight: bold;
     margin-right: 1rem;
     font-size: 22px;
-    background: linear-gradient(45deg, purple, coral);
+    background: linear-gradient(45deg, #800080, #ff7f50);
     background-clip: text;
     -webkit-text-fill-color: transparent;
   }
   #searchBar {
     display: flex;
+    justify-self: start;
     align-items: center;
     justify-content: center;
     .searchInput-container {
@@ -100,7 +103,8 @@ header {
         font-size: 16px;
         font-family: "Segoe UI Regular", sans-serif;
         min-width: 300px;
-        padding: 0.5rem 1rem;
+        height: 42px;
+        padding: 0 1rem;
         outline: none;
         border: 2px solid transparent;
         border-radius: 50px;
@@ -135,48 +139,14 @@ header {
       }
     }
   }
-  .btn {
-    position: relative;
-    outline: none;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    background: #eee;
-    border: 2px solid transparent;
-    height: 42px;
-    line-height: 42px;
-    min-width: 42px;
-    font-size: 14px;
-    border-radius: 25px;
-    cursor: pointer;
-    transition: $themeTransition;
-    &:hover {
-      background: $light_inputBG_hover;
-      transition: none;
-    }
-    &:focus {
-      background: $light_inputBG_focus;
-      border-color: coral;
-    }
-    &.singleIcon {
-      width: 42px;
-    }
-    &::after {
-      content: attr(data-icon);
-      font-size: 18px;
-      font-family: "Material Icons Round";
-    }
-    &:not(:empty) {
-      padding: 0 10px;
-      &::after {
-        margin-left: 0.5rem;
-      }
-    }
-  }
   .right-container {
+    width: fit-content;
+    grid-column: 4/5;
+    justify-self: end;
     display: flex;
     align-items: center;
     #favorites {
+      margin-right: 1rem;
       &.active {
         &::after {
           color: #222;
@@ -185,6 +155,45 @@ header {
     }
   }
 }
+.btn {
+  position: relative;
+  outline: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #eee;
+  border: 2px solid transparent;
+  height: 42px;
+  line-height: 42px;
+  min-width: 42px;
+  font-size: 14px;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: $themeTransition;
+  &:hover {
+    background: $light_inputBG_hover;
+    transition: none;
+  }
+  &:focus {
+    background: $light_inputBG_focus;
+    border-color: coral;
+  }
+  &.singleIcon {
+    width: 42px;
+  }
+  &::after {
+    content: attr(data-icon);
+    font-size: 18px;
+    font-family: "Material Icons Round";
+  }
+  &:not(:empty) {
+    padding: 0 10px;
+    &::after {
+      margin-left: 0.5rem;
+    }
+  }
+}
+
 // * Incomplete
 .DARKTHEME {
   color: #bbb;
@@ -214,17 +223,15 @@ header {
         }
       }
     }
-    .right-container {
-      .btn {
-        background: $dark_inputBG;
-        color: #bbb;
-        &:hover {
-          background: $dark_inputBG_hover;
-        }
-        &:focus {
-          background: $dark_inputBG_focus;
-          border-color: #5f4c44;
-        }
+    .btn {
+      background: $dark_inputBG;
+      color: #bbb;
+      &:hover {
+        background: $dark_inputBG_hover;
+      }
+      &:focus {
+        background: $dark_inputBG_focus;
+        border-color: #5f4c44;
       }
     }
   }
@@ -386,6 +393,25 @@ main {
         transition: $themeTransition;
         border-radius: 20px;
       }
+      .closeBtn {
+        border-radius: 30px;
+        background: #ddd;
+        display: none;
+        font-family: "Material Icons Round";
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        font-size: 24px;
+        width: 40px;
+        height: 40px;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 10;
+        &:hover {
+          color: coral;
+        }
+      }
       .info {
         position: absolute;
         right: 0;
@@ -406,26 +432,8 @@ main {
         span.crawledTime {
           display: none;
         }
-        .closeBtn {
-          border-radius: 30px;
-          background: #ddd;
-          display: none;
-          font-family: "Material Icons Round";
-          position: absolute;
-          right: 10px;
-          top: 10px;
-          font-size: 24px;
-          width: 40px;
-          height: 40px;
-          align-items: center;
-          justify-content: center;
-          cursor: pointer;
-          &:hover {
-            color: coral;
-          }
-        }
         .description {
-          max-height: calc(100% - 3rem);
+          max-height: 100%;
           text-overflow: ellipsis;
           white-space: nowrap;
           overflow: hidden;
@@ -636,6 +644,9 @@ main {
           transition: $themeTransition;
           border-radius: 0;
         }
+        .closeBtn {
+          display: flex;
+        }
         .info {
           position: unset;
           cursor: unset;
@@ -647,7 +658,7 @@ main {
           height: 100%;
           transition: $themeTransition;
           h3.title {
-            max-width: calc(100% - 90px);
+            max-width: calc(100% - 80px);
             color: #222;
           }
           span.crawledTime {
@@ -659,12 +670,9 @@ main {
               content: "Crawled: ";
             }
           }
-          .closeBtn {
-            display: flex;
-          }
           .description {
             font-size: 1.15rem;
-            width: calc(100% - 5rem);
+            width: 100%;
             white-space: normal;
             background: transparent;
             ul {
@@ -692,13 +700,6 @@ main {
             align-items: center;
             flex-wrap: wrap;
             margin-top: auto;
-            h4 {
-              &::after {
-                content: "Based on product type (color, material and style also take part)";
-                font-size: 14px;
-                color: #888;
-              }
-            }
           }
           a.domain {
             position: unset;
@@ -833,3 +834,9 @@ main {
   opacity: 0;
   transition: $themeTransition;
 }
+
+#mobileSearchIcon {
+  display: none;
+}
+
+@import "css/media-L430";
