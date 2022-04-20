@@ -543,7 +543,7 @@ function addItem(ref, columns, count) {
  */
 let i = 0;
 showFooterLoading(true);
-fetch("http://xoosha.com/ws/1/test.php?offset=20")
+fetch("https://xoosha.com/ws/1/test.php?offset=20")
   .then((res) => res.json())
   .then((newData) => {
     data = newData.map((product) => {
@@ -616,7 +616,7 @@ document.addEventListener("scroll", (ev) => {
   ) {
     isLoading = true;
     showFooterLoading(true);
-    fetch(`http://xoosha.com/ws/1/test.php?offset=${offset}`)
+    fetch(`https://xoosha.com/ws/1/test.php?offset=${offset}`)
       .then((res) => res.json())
       .then((newData) => {
         let postProcessData = newData.map((product) => {
