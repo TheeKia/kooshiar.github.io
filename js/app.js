@@ -34,6 +34,11 @@ if (
 } else {
   likes = [];
 }
+// Theme
+let theme = "light";
+if (window.localStorage.getItem("theme")) {
+  theme = window.localStorage.getItem("theme");
+}
 
 function emptyColumns() {
   columns.forEach((col) => {
@@ -69,6 +74,7 @@ const footerLoading = select("#footer-loading--container");
 El_toggleTheme.addEventListener("click", () => {
   icon = El_toggleTheme.dataset.icon;
   if (icon === "brightness_3") {
+    window.localStorage.setItem("theme", "dark");
     El_toggleTheme.style.color = "transparent";
     setTimeout(() => {
       El_toggleTheme.style.color = "#bbb";
@@ -76,6 +82,7 @@ El_toggleTheme.addEventListener("click", () => {
     }, 300);
     setDarkTheme(true);
   } else {
+    window.localStorage.setItem("theme", "light");
     El_toggleTheme.style.color = "transparent";
     setTimeout(() => {
       El_toggleTheme.style.color = "#222";
@@ -84,6 +91,14 @@ El_toggleTheme.addEventListener("click", () => {
     setDarkTheme(false);
   }
 });
+if (theme === "dark") {
+  El_toggleTheme.style.color = "transparent";
+  setTimeout(() => {
+    El_toggleTheme.style.color = "#bbb";
+    El_toggleTheme.dataset.icon = "light_mode";
+  }, 300);
+  setDarkTheme(true);
+}
 
 /**
  * * Favorites List
@@ -325,6 +340,10 @@ function addItem(ref, columns, count) {
   const h3_title = document.createElement("h3");
   h3_title.setAttribute("class", "title");
   h3_title.innerHTML = ref[count]["name"];
+  // * Crawled Time
+  const span_time = document.createElement("span");
+  span_time.setAttribute("class", "crawledTime");
+  span_time.innerHTML = dateToString(ref[count]["crawled_time"]);
   // * Description
   const p_des = document.createElement("p");
   p_des.setAttribute("class", "description");
@@ -356,6 +375,7 @@ function addItem(ref, columns, count) {
   if (likes.includes(ref[count]["page_id"])) btn_like.classList.add("LIKED");
 
   div_info.appendChild(h3_title);
+  div_info.appendChild(span_time);
   div_info.appendChild(div_close);
   div_info.appendChild(p_des);
   div_info.appendChild(p_price);
@@ -522,6 +542,7 @@ function addItem(ref, columns, count) {
  * * First Data Fetch
  */
 let i = 0;
+showFooterLoading(true);
 fetch("http://xoosha.com/ws/1/test.php?offset=20")
   .then((res) => res.json())
   .then((newData) => {
@@ -564,10 +585,12 @@ El_searchInput.addEventListener("input", (ev) => {
 
       addItem(newData, columns, searchResultsCount);
       nothing.style.display = "none";
+      mainContainer.style.display = "flex";
     } else {
       resultsInfo.innerHTML = "";
       showFooterLoading(false);
       nothing.style.display = "flex";
+      mainContainer.style.display = "none";
     }
   }, searchDelay);
 });
@@ -596,7 +619,14 @@ document.addEventListener("scroll", (ev) => {
     fetch(`http://xoosha.com/ws/1/test.php?offset=${offset}`)
       .then((res) => res.json())
       .then((newData) => {
-        data = data.concat(newData);
+        let postProcessData = newData.map((product) => {
+          let type = productType(product);
+          product["type"] = type;
+          return product;
+        });
+
+        data = data.concat(postProcessData);
+
         addItem(data, columns, addedItems);
         offset += 60;
       });

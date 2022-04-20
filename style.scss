@@ -1,6 +1,15 @@
 @import "./css/initial";
 @import "./css/segoe-ui";
 
+@keyframes flash {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
 $light_inputBG: #eee;
 $light_inputBG_hover: #e5e5e5;
 $light_inputBG_focus: #e5e5e5;
@@ -261,6 +270,40 @@ body {
       }
     }
   }
+  &.LOADING {
+    main {
+      .col {
+        &:empty {
+          position: relative;
+          background: rgba(240, 240, 240, 0.4);
+          min-height: 350px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          overflow: hidden;
+          &::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            transform: scale(1.5);
+            background: linear-gradient(
+              90deg,
+              transparent 40%,
+              rgba(255, 255, 255, 0.4) 50%,
+              transparent 60%
+            );
+            animation: flash 0.8s infinite ease-in-out;
+          }
+          &::after {
+            content: "...";
+          }
+        }
+      }
+    }
+  }
 }
 body.EXPANDED.HISTORY {
   #prevHistory {
@@ -300,10 +343,10 @@ main {
     flex-direction: column;
     margin: 2rem auto;
     &:first-child {
-      margin-left: 0;
+      margin-left: 1px;
     }
     &:last-child {
-      margin-right: 0;
+      margin-right: 1px;
     }
   }
   .item {
@@ -341,6 +384,9 @@ main {
         h3.title {
           color: #fff;
           margin-bottom: 1rem;
+        }
+        span.crawledTime {
+          display: none;
         }
         .closeBtn {
           border-radius: 30px;
@@ -583,7 +629,17 @@ main {
           height: 100%;
           transition: $themeTransition;
           h3.title {
+            max-width: calc(100% - 90px);
             color: #222;
+          }
+          span.crawledTime {
+            display: block;
+            color: #888;
+            font-size: 0.9rem;
+            margin: -1rem 0 1rem 0;
+            &::before {
+              content: "Crawled: ";
+            }
           }
           .closeBtn {
             display: flex;
@@ -710,37 +766,37 @@ main {
 
 #footer-loading--container {
   position: fixed;
-  left: calc(50% - 100px);
-  bottom: 4rem;
-  width: 200px;
-  height: 80px;
-  border-radius: 10px;
-  background: rgba(34, 34, 34, 0.8);
-  backdrop-filter: blur(5px);
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 70px;
+  background: linear-gradient(transparent, rgba(30, 30, 30, 0.8));
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: monospace;
+  transform: translateY(100%);
+  transition: $themeTransition;
   .load-box--container {
-    width: 80px;
+    width: 70px;
     height: 40px;
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #ccc;
+    color: #fff;
     .load-box {
       position: absolute;
       border: none;
       &.tr {
-        border-top: 1px dotted #aaa;
-        border-right: 1px dotted #aaa;
+        border-top: 1px dotted #fff;
+        border-right: 1px dotted #fff;
         animation: loadTR 1.2s infinite alternate ease-in-out;
         animation-delay: 0.5s;
       }
       &.bl {
-        border-bottom: 1px dotted #aaa;
-        border-left: 1px dotted #aaa;
+        border-bottom: 1px dotted #fff;
+        border-left: 1px dotted #fff;
         animation: loadBL 1.2s infinite alternate ease-in-out;
       }
     }
