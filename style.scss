@@ -228,6 +228,24 @@ header {
       }
     }
   }
+  &.LOADING {
+    main {
+      .col {
+        &:empty {
+          background: rgba(20, 20, 20, 0.4);
+          color: #ccc;
+          &::before {
+            background: linear-gradient(
+              90deg,
+              transparent 40%,
+              rgba(100, 100, 100, 0.4) 50%,
+              transparent 60%
+            );
+          }
+        }
+      }
+    }
+  }
 }
 
 #prevHistory {
