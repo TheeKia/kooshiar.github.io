@@ -361,7 +361,10 @@ function addItem(ref, columns, count) {
   // * Creating div.item
   let img = new Image();
   img.src = ref[count]["image_url"];
-  img.setAttribute("class", "mainImage");
+  const div_imgBG = document.createElement("div");
+  div_imgBG.setAttribute("class", "mainImage");
+  div_imgBG.style.backgroundImage = `url(${ref[count]["image_url"]})`;
+  // img.setAttribute("class", "mainImage");
 
   const div_item = document.createElement("div");
   div_item.id = ref[count]["page_id"];
@@ -420,7 +423,7 @@ function addItem(ref, columns, count) {
   div_info.appendChild(btn_like);
 
   article_container.appendChild(div_close);
-  article_container.appendChild(img);
+  article_container.appendChild(div_imgBG);
   article_container.appendChild(div_info);
 
   div_item.appendChild(article_container);
@@ -454,7 +457,7 @@ function addItem(ref, columns, count) {
     if (!backHistory) changeHistory("add", ref[count - 1]["page_id"]);
     backHistory = false;
 
-    img.style.opacity = 0;
+    div_imgBG.style.opacity = 0;
     div_info.style.opacity = 0;
     div_close.style.opacity = 0;
     prevHistory.style.opacity = 0;
@@ -462,8 +465,8 @@ function addItem(ref, columns, count) {
     setTimeout(() => {
       div_item.classList.add("expanded");
 
-      img.style.transition = "all 0s";
-      img.style.transform = "translateX(-25px)";
+      div_imgBG.style.transition = "all 0s";
+      div_imgBG.style.transform = "translateX(-25px)";
       div_info.style.transition = "all 0s";
       div_info.style.transform = "translateX(25px)";
       div_close.style.transition = "all 0s";
@@ -472,13 +475,13 @@ function addItem(ref, columns, count) {
       prevHistory.style.transform = "translateX(25px)";
 
       setTimeout(() => {
-        img.style.transition = "all 0.3s ease-in-out";
+        div_imgBG.style.transition = "all 0.3s ease-in-out";
         div_info.style.transition = "all 0.3s ease-in-out";
         div_close.style.transition = "all 0.3s ease-in-out";
         prevHistory.style.transition = "all 0.3s ease-in-out";
 
-        img.style.opacity = 1;
-        img.style.transform = "translateX(0)";
+        div_imgBG.style.opacity = 1;
+        div_imgBG.style.transform = "translateX(0)";
         div_info.style.transform = "translateX(0)";
         div_info.style.opacity = 1;
         div_close.style.transform = "translateX(0)";
@@ -498,8 +501,8 @@ function addItem(ref, columns, count) {
     preserveHistory = false;
     document.body.classList.remove("EXPANDED");
 
-    img.style.opacity = 0;
-    img.style.transform = "translateX(-25px)";
+    div_imgBG.style.opacity = 0;
+    div_imgBG.style.transform = "translateX(-25px)";
     div_info.style.opacity = 0;
     div_info.style.transform = "translateX(25px)";
     div_close.style.opacity = 0;
@@ -510,23 +513,23 @@ function addItem(ref, columns, count) {
     setTimeout(() => {
       div_item.classList.remove("expanded");
 
-      img.style.transition = "all 0s";
+      div_imgBG.style.transition = "all 0s";
       div_info.style.transition = "all 0s";
       div_close.style.transition = "all 0s";
       prevHistory.style.transition = "all 0s";
 
-      img.style.transform = "translateX(0)";
+      div_imgBG.style.transform = "translateX(0)";
       div_info.style.transform = "translateX(0)";
       div_close.style.transform = "translateX(0)";
       prevHistory.style.transform = "translateX(0)";
 
       setTimeout(() => {
-        img.style.transition = "all 0.3s ease-in-out";
+        div_imgBG.style.transition = "all 0.3s ease-in-out";
         div_info.style.transition = "all 0.3s ease-in-out";
         div_close.style.transition = "all 0.3s ease-in-out";
         prevHistory.style.transition = "all 0.3s ease-in-out";
 
-        img.style.opacity = 1;
+        div_imgBG.style.opacity = 1;
         div_info.style.opacity = "";
         div_close.style.opacity = "";
         prevHistory.style.opacity = "";
@@ -543,6 +546,9 @@ function addItem(ref, columns, count) {
   let theCol;
   try {
     img.onload = function () {
+      div_item.style.minHeight =
+        (columns[0].offsetWidth / img.width) * img.height + "px"; // So the height doesn't depend on the image anymore
+      div_imgBG.style.aspectRatio = `${img.width}/${img.height}`;
       columns.forEach((col) => {
         if (minHeight === null) {
           minHeight = col.offsetHeight;
@@ -585,7 +591,8 @@ function addItem(ref, columns, count) {
       // Show item
       setTimeout(() => {
         showItem(div_item);
-        div_item.style.minHeight = div_item.offsetHeight + "px"; // So the height doesn't depend on the image anymore
+        // div_item.style.minHeight =
+        // (theCol.offsetWidth / img.width) * img.height + "px"; // So the height doesn't depend on the image anymore
       }, 300);
     };
   } catch {

@@ -196,7 +196,6 @@ header {
 
 // * Incomplete
 .DARKTHEME {
-  color: #bbb;
   header {
     // background: rgba(0, 0, 0, 0.8);
     .header-title {
@@ -232,6 +231,59 @@ header {
       &:focus {
         background: $dark_inputBG_focus;
         border-color: #5f4c44;
+      }
+    }
+    .right-container {
+      #favorites {
+        &.active {
+          &::after {
+            color: unset;
+          }
+        }
+      }
+    }
+  }
+  main {
+    .item {
+      &.expanded {
+        article.container {
+          .info {
+            background: #222;
+            color: #ddd;
+            h3.title {
+              color: #fff;
+            }
+            .price {
+              background: #383838;
+            }
+            .similar-container {
+              h4 {
+                color: #ccc;
+                &::after {
+                  background-color: #555;
+                }
+              }
+              .similar-grid {
+                .similar-scrollLeft,
+                .similar-scrollRight {
+                  background: #383838;
+                  &:hover {
+                    background: #555;
+                  }
+                }
+                &::-webkit-scrollbar-thumb {
+                  background: #555;
+                  &:active {
+                    background: #777;
+                  }
+                }
+                &::-webkit-scrollbar-track {
+                  background: #111;
+                }
+              }
+            }
+          }
+        }
       }
     }
   }
@@ -274,7 +326,7 @@ header {
   pointer-events: none;
   transition: transform 0.3s ease-in-out, opacity 0.2s ease-in-out;
   &:hover {
-    transition-delay: 0 !important;
+    transition-delay: 0s !important;
     color: coral;
   }
 }
@@ -384,12 +436,15 @@ main {
     opacity: 0;
     transition: $themeTransition;
     article.container {
+      width: 100%;
       display: flex;
-      img.mainImage {
-        bottom: 0;
+      div.mainImage {
+        display: inline-flex;
         width: 100%;
-        transition: $themeTransition;
-        border-radius: 20px;
+        height: 100%;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: left;
       }
       .closeBtn {
         border-radius: 30px;
@@ -536,10 +591,14 @@ main {
               height: 5px;
             }
             &::-webkit-scrollbar-thumb {
-              background: #888;
+              background: #777;
+              &:active {
+                background: #555;
+              }
             }
             &::-webkit-scrollbar-track {
               background: #ccc;
+              border-radius: 5px;
             }
             .similar-item {
               width: 150px;
@@ -641,6 +700,11 @@ main {
           height: 100%;
           transition: $themeTransition;
           border-radius: 0;
+        }
+        div.mainImage {
+          max-width: 50%;
+          background-color: #eee;
+          border-right: 1px solid #aaa;
         }
         .closeBtn {
           display: flex;
@@ -838,6 +902,6 @@ main {
   display: none;
 }
 
-@import "css/media-L430";
-@import "css/media-L850-headerCHange";
 @import "css/media-L1100";
+@import "css/media-L850-headerCHange";
+@import "css/media-L430";

@@ -16,13 +16,17 @@
             }
             a.domain {
               left: 0.8rem;
+              display: none;
             }
             button.like {
               right: 0.8rem;
             }
-            .readMore {
-              display: none;
-            }
+          }
+        }
+        &.expanded {
+          article.container {
+            width: 100%;
+            left: 0;
           }
         }
       }

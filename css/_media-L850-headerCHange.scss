@@ -57,6 +57,13 @@
               font-size: 1rem;
               margin-bottom: 0.5rem;
             }
+            a.domain {
+              left: 0.8rem;
+              display: none;
+            }
+            .readMore {
+              display: none;
+            }
           }
         }
         &.expanded {
@@ -70,9 +77,9 @@
             z-index: 10;
             flex-direction: column;
             overflow-y: scroll;
-            img.mainImage {
-              width: 100%;
-              height: unset;
+            div.mainImage {
+              max-width: 100%;
+              min-width: 100%;
             }
             .info {
               overflow-y: scroll;
@@ -96,6 +103,9 @@
                 h4::after {
                   content: "";
                 }
+              }
+              a.domain {
+                display: flex;
               }
             }
           }
