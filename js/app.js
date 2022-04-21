@@ -1,7 +1,21 @@
 // TODO: disable search while viewing saved products
 const searchDelay = 400;
 let windowWidth = window.innerWidth;
-let minColWidth = windowWidth > 430 ? 230 : 120;
+let minColWidth;
+
+function setMinColWidth() {
+  if (windowWidth <= 430) {
+    minColWidth = 120;
+  } else if (windowWidth <= 750) {
+    minColWidth = 130;
+  } else if (windowWidth <= 1000) {
+    minColWidth = 140;
+  } else {
+    minColWidth = 200;
+  }
+}
+
+setMinColWidth();
 
 /**
  * * Variables
@@ -193,7 +207,8 @@ prevHistory.addEventListener("click", (ev) => {
 window.onresize = (ev) => {
   if (windowWidth === window.innerWidth) return;
   windowWidth = window.innerWidth;
-  minColWidth = windowWidth > 430 ? 230 : 120;
+  setMinColWidth();
+  console.log(windowWidth, minColWidth);
   numberOfCols = Math.floor((windowWidth * 0.8) / minColWidth);
   columns = [];
   mainContainer.innerHTML = "";
@@ -442,6 +457,7 @@ function addItem(ref, columns, count) {
     img.style.opacity = 0;
     div_info.style.opacity = 0;
     div_close.style.opacity = 0;
+    prevHistory.style.opacity = 0;
 
     setTimeout(() => {
       div_item.classList.add("expanded");
@@ -452,11 +468,14 @@ function addItem(ref, columns, count) {
       div_info.style.transform = "translateX(25px)";
       div_close.style.transition = "all 0s";
       div_close.style.transform = "translateX(25px)";
+      prevHistory.style.transition = "all 0s";
+      prevHistory.style.transform = "translateX(25px)";
 
       setTimeout(() => {
         img.style.transition = "all 0.3s ease-in-out";
         div_info.style.transition = "all 0.3s ease-in-out";
         div_close.style.transition = "all 0.3s ease-in-out";
+        prevHistory.style.transition = "all 0.3s ease-in-out";
 
         img.style.opacity = 1;
         img.style.transform = "translateX(0)";
@@ -464,6 +483,8 @@ function addItem(ref, columns, count) {
         div_info.style.opacity = 1;
         div_close.style.transform = "translateX(0)";
         div_close.style.opacity = 1;
+        prevHistory.style.transform = "translateX(0)";
+        prevHistory.style.opacity = 1;
 
         similarsTimeout = setTimeout(() => {
           loadSimilars(section_similar, ref[count - 1], div_close);
@@ -479,10 +500,12 @@ function addItem(ref, columns, count) {
 
     img.style.opacity = 0;
     img.style.transform = "translateX(-25px)";
-    div_close.style.opacity = 0;
-    div_close.style.transform = "translateX(25px)";
     div_info.style.opacity = 0;
     div_info.style.transform = "translateX(25px)";
+    div_close.style.opacity = 0;
+    div_close.style.transform = "translateX(25px)";
+    prevHistory.style.opacity = 0;
+    prevHistory.style.transform = "translateX(25px)";
 
     setTimeout(() => {
       div_item.classList.remove("expanded");
@@ -490,18 +513,23 @@ function addItem(ref, columns, count) {
       img.style.transition = "all 0s";
       div_info.style.transition = "all 0s";
       div_close.style.transition = "all 0s";
+      prevHistory.style.transition = "all 0s";
 
       img.style.transform = "translateX(0)";
       div_info.style.transform = "translateX(0)";
       div_close.style.transform = "translateX(0)";
+      prevHistory.style.transform = "translateX(0)";
 
       setTimeout(() => {
         img.style.transition = "all 0.3s ease-in-out";
         div_info.style.transition = "all 0.3s ease-in-out";
         div_close.style.transition = "all 0.3s ease-in-out";
+        prevHistory.style.transition = "all 0.3s ease-in-out";
+
         img.style.opacity = 1;
         div_info.style.opacity = "";
         div_close.style.opacity = "";
+        prevHistory.style.opacity = "";
       }, 50);
       section_similar.classList.remove("active");
       section_similar.querySelectorAll(".similar-item").forEach((item) => {
