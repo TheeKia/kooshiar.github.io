@@ -359,12 +359,13 @@ function addItem(ref, columns, count) {
    */
 
   // * Creating div.item
-  let img = new Image();
+  const img = new Image();
   img.src = ref[count]["image_url"];
+  img.setAttribute("class", "mainImageTag");
+
   const div_imgBG = document.createElement("div");
   div_imgBG.setAttribute("class", "mainImage");
   div_imgBG.style.backgroundImage = `url(${ref[count]["image_url"]})`;
-  // img.setAttribute("class", "mainImage");
 
   const div_item = document.createElement("div");
   div_item.id = ref[count]["page_id"];
@@ -424,6 +425,7 @@ function addItem(ref, columns, count) {
 
   article_container.appendChild(div_close);
   article_container.appendChild(div_imgBG);
+  article_container.appendChild(img);
   article_container.appendChild(div_info);
 
   div_item.appendChild(article_container);
@@ -467,6 +469,8 @@ function addItem(ref, columns, count) {
 
       div_imgBG.style.transition = "all 0s";
       div_imgBG.style.transform = "translateX(-25px)";
+      img.style.transition = "all 0s";
+      img.style.transform = "translateX(-25px)";
       div_info.style.transition = "all 0s";
       div_info.style.transform = "translateX(25px)";
       div_close.style.transition = "all 0s";
@@ -476,12 +480,15 @@ function addItem(ref, columns, count) {
 
       setTimeout(() => {
         div_imgBG.style.transition = "all 0.3s ease-in-out";
+        img.style.transition = "all 0.3s ease-in-out";
         div_info.style.transition = "all 0.3s ease-in-out";
         div_close.style.transition = "all 0.3s ease-in-out";
         prevHistory.style.transition = "all 0.3s ease-in-out";
 
         div_imgBG.style.opacity = 1;
         div_imgBG.style.transform = "translateX(0)";
+        img.style.opacity = 1;
+        img.style.transform = "translateX(0)";
         div_info.style.transform = "translateX(0)";
         div_info.style.opacity = 1;
         div_close.style.transform = "translateX(0)";
@@ -503,6 +510,8 @@ function addItem(ref, columns, count) {
 
     div_imgBG.style.opacity = 0;
     div_imgBG.style.transform = "translateX(-25px)";
+    img.style.opacity = 0;
+    img.style.transform = "translateX(-25px)";
     div_info.style.opacity = 0;
     div_info.style.transform = "translateX(25px)";
     div_close.style.opacity = 0;
@@ -514,22 +523,26 @@ function addItem(ref, columns, count) {
       div_item.classList.remove("expanded");
 
       div_imgBG.style.transition = "all 0s";
+      img.style.transition = "all 0s";
       div_info.style.transition = "all 0s";
       div_close.style.transition = "all 0s";
       prevHistory.style.transition = "all 0s";
 
       div_imgBG.style.transform = "translateX(0)";
+      img.style.transform = "translateX(0)";
       div_info.style.transform = "translateX(0)";
       div_close.style.transform = "translateX(0)";
       prevHistory.style.transform = "translateX(0)";
 
       setTimeout(() => {
         div_imgBG.style.transition = "all 0.3s ease-in-out";
+        img.style.transition = "all 0.3s ease-in-out";
         div_info.style.transition = "all 0.3s ease-in-out";
         div_close.style.transition = "all 0.3s ease-in-out";
         prevHistory.style.transition = "all 0.3s ease-in-out";
 
         div_imgBG.style.opacity = 1;
+        img.style.opacity = 1;
         div_info.style.opacity = "";
         div_close.style.opacity = "";
         prevHistory.style.opacity = "";

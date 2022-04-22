@@ -77,9 +77,13 @@
             z-index: 10;
             flex-direction: column;
             overflow-y: scroll;
+            img.mainImageTag {
+              display: block;
+            }
             div.mainImage {
-              max-width: 100%;
-              min-width: 100%;
+              display: none;
+              // max-width: 100%;
+              // min-width: 100%;
             }
             .info {
               overflow-y: scroll;

@@ -441,6 +441,12 @@ main {
     article.container {
       width: 100%;
       display: flex;
+      img.mainImageTag {
+        display: none;
+        opacity: 0;
+        width: 100%;
+        height: auto;
+      }
       div.mainImage {
         display: inline-flex;
         width: 100%;
