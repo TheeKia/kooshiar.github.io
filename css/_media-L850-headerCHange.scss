@@ -151,6 +151,15 @@
         }
       }
     }
+    &.LOADING {
+      main {
+        .col {
+          &:empty {
+            min-height: 260px;
+          }
+        }
+      }
+    }
   }
   #prevHistory {
     top: 10px;
