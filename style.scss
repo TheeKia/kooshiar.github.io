@@ -360,6 +360,7 @@ main {
         }
       }
       .info {
+        border-radius: 20px;
         position: absolute;
         right: 0;
         bottom: 0;
@@ -614,6 +615,7 @@ main {
           display: flex;
         }
         .info {
+          border-radius: 0;
           position: unset;
           cursor: unset;
           padding: 1.5rem;

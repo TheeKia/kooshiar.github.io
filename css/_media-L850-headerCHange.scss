@@ -56,8 +56,9 @@
           overflow-x: hidden;
           .info {
             h3.title {
-              font-size: 1rem;
-              margin-bottom: 0.5rem;
+              line-height: 1.2rem;
+              font-size: 0.95rem;
+              margin-bottom: 0.4rem;
             }
             a.domain {
               left: 0.8rem;
@@ -89,9 +90,10 @@
               overflow-y: scroll;
               min-height: 100vh;
               h3.title {
+                line-height: 1.6rem;
                 max-width: calc(100% - 25px);
                 font-size: 1.2rem;
-                margin-bottom: 1rem;
+                margin-bottom: 1.2rem;
               }
               .description {
                 display: contents;

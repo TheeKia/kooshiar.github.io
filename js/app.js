@@ -411,6 +411,7 @@ function addItem(ref, columns, count) {
   // * Domain
   const btn_like = document.createElement("button");
   btn_like.setAttribute("class", "like");
+  btn_like.setAttribute("title", "Save");
   if (likes.includes(ref[count]["page_id"])) btn_like.classList.add("LIKED");
 
   div_info.appendChild(h3_title);
