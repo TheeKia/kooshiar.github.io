@@ -115,7 +115,7 @@ header {
         }
         &:focus {
           background: $light_inputBG_focus;
-          border-color: coral;
+          border-color: #929292;
           min-width: 380px;
         }
       }
@@ -176,7 +176,7 @@ header {
   }
   &:focus {
     background: $light_inputBG_focus;
-    border-color: coral;
+    border-color: #929292;
   }
   &.singleIcon {
     width: 42px;
@@ -191,122 +191,6 @@ header {
     &::after {
       margin-left: 0.5rem;
     }
-  }
-}
-
-// * Incomplete
-.DARKTHEME {
-  header {
-    // background: rgba(0, 0, 0, 0.8);
-    .header-title {
-      color: #bbb;
-    }
-    #searchBar {
-      .searchInput-container {
-        #searchInput {
-          background: $dark_inputBG;
-          color: #eee;
-          &:hover {
-            background: $dark_inputBG_hover;
-          }
-          &:focus {
-            background: $dark_inputBG_focus;
-            border-color: #5f4c44;
-          }
-        }
-      }
-      .searchBar-r {
-        color: #bbb;
-        .ctrlK {
-          background: #444;
-        }
-      }
-    }
-    .btn {
-      background: $dark_inputBG;
-      color: #bbb;
-      &:hover {
-        background: $dark_inputBG_hover;
-      }
-      &:focus {
-        background: $dark_inputBG_focus;
-        border-color: #5f4c44;
-      }
-    }
-    .right-container {
-      #favorites {
-        &.active {
-          &::after {
-            color: unset;
-          }
-        }
-      }
-    }
-  }
-  main {
-    .item {
-      &.expanded {
-        article.container {
-          .info {
-            background: #222;
-            color: #ddd;
-            h3.title {
-              color: #fff;
-            }
-            .price {
-              background: #383838;
-            }
-            .similar-container {
-              h4 {
-                color: #ccc;
-                &::after {
-                  background-color: #555;
-                }
-              }
-              .similar-grid {
-                .similar-scrollLeft,
-                .similar-scrollRight {
-                  background: #383838;
-                  &:hover {
-                    background: #555;
-                  }
-                }
-                &::-webkit-scrollbar-thumb {
-                  background: #555;
-                  &:active {
-                    background: #777;
-                  }
-                }
-                &::-webkit-scrollbar-track {
-                  background: #111;
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-  &.LOADING {
-    main {
-      .col {
-        &:empty {
-          background: rgba(20, 20, 20, 0.4);
-          color: #ccc;
-          &::before {
-            background: linear-gradient(
-              90deg,
-              transparent 40%,
-              rgba(100, 100, 100, 0.4) 50%,
-              transparent 60%
-            );
-          }
-        }
-      }
-    }
-  }
-  #nothing {
-    color: #aaa;
   }
 }
 
@@ -330,7 +214,7 @@ header {
   transition: transform 0.3s ease-in-out, opacity 0.2s ease-in-out;
   &:hover {
     transition-delay: 0s !important;
-    color: coral;
+    color: #ff7f50;
   }
 }
 body {
@@ -396,6 +280,7 @@ body.EXPANDED.HISTORY {
 
 // *
 #resultsInfo {
+  color: #222;
   width: 80%;
   margin: 0 auto;
 }
@@ -471,7 +356,7 @@ main {
         cursor: pointer;
         z-index: 10;
         &:hover {
-          color: coral;
+          color: #ff7f50;
         }
       }
       .info {
@@ -521,16 +406,26 @@ main {
           }
         }
         .readMore {
+          display: none;
           font-size: 0.9rem;
-          color: coral;
+          color: #ff7f50;
         }
         .price {
-          color: #fff;
-          background: #222;
+          color: #3b7822;
+          background: #fff;
           width: fit-content;
+          font-family: monospace;
+          font-weight: bold;
           border-radius: 3px;
           padding: 0.2rem 0.5rem;
           margin-top: 0.5rem;
+          display: flex;
+          align-items: center;
+          &::before {
+            content: "\ef63";
+            font-family: "Material Icons Round";
+            margin-right: 0.5rem;
+          }
         }
         .similar-container {
           display: none;
@@ -765,6 +660,8 @@ main {
           .price {
             font-size: 1.5rem;
             margin-top: 1rem;
+            font-weight: normal;
+            background: transparent;
           }
           .similar-container {
             width: 100%;
@@ -909,6 +806,124 @@ main {
 
 #mobileSearchIcon {
   display: none;
+}
+
+.DARKTHEME {
+  header {
+    .header-title {
+      color: #bbb;
+    }
+    #searchBar {
+      .searchInput-container {
+        #searchInput {
+          background: $dark_inputBG;
+          color: #eee;
+          &:hover {
+            background: $dark_inputBG_hover;
+          }
+          &:focus {
+            background: $dark_inputBG_focus;
+            border-color: #929292;
+          }
+        }
+      }
+      .searchBar-r {
+        color: #bbb;
+        .ctrlK {
+          background: #444;
+        }
+      }
+    }
+    .btn {
+      background: $dark_inputBG;
+      color: #bbb;
+      &:hover {
+        background: $dark_inputBG_hover;
+      }
+      &:focus {
+        background: $dark_inputBG_focus;
+        border-color: #929292;
+      }
+    }
+    .right-container {
+      #favorites {
+        &.active {
+          &::after {
+            color: unset;
+          }
+        }
+      }
+    }
+  }
+  main {
+    .item {
+      &.expanded {
+        article.container {
+          .info {
+            background: #222;
+            color: #ddd;
+            h3.title {
+              color: #fff;
+            }
+            .price {
+              color: #98e977;
+              background: transparent;
+            }
+            .similar-container {
+              h4 {
+                color: #ccc;
+                &::after {
+                  background-color: #555;
+                }
+              }
+              .similar-grid {
+                .similar-scrollLeft,
+                .similar-scrollRight {
+                  background: #383838;
+                  &:hover {
+                    background: #555;
+                  }
+                }
+                &::-webkit-scrollbar-thumb {
+                  background: #555;
+                  &:active {
+                    background: #777;
+                  }
+                }
+                &::-webkit-scrollbar-track {
+                  background: #111;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  &.LOADING {
+    main {
+      .col {
+        &:empty {
+          background: rgba(20, 20, 20, 0.4);
+          color: #ccc;
+          &::before {
+            background: linear-gradient(
+              90deg,
+              transparent 40%,
+              rgba(100, 100, 100, 0.4) 50%,
+              transparent 60%
+            );
+          }
+        }
+      }
+    }
+  }
+  #nothing {
+    color: #aaa;
+  }
+  #resultsInfo {
+    color: #bbb;
+  }
 }
 
 @import "css/media-L1100";

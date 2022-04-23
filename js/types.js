@@ -20,11 +20,14 @@ const typeSynonyms = {
     "messenger bag",
     "puffer bag",
     "long bag",
+    "lunchbox",
     "bags",
   ],
   top: ["vest top"],
   shoe: ["boot", "heel", "sandal"],
   pants: ["baggy", "jeans"],
+  dress: ["skirt"],
+  jewel: ["earring", "bangle"],
 };
 const productTypes = [
   "cross body bag",
@@ -39,20 +42,33 @@ const productTypes = [
   "messenger bag",
   "puffer bag",
   "long bag",
+  "lunchbox ",
 
   "shoe",
   "boot",
   "heel",
   "sandal",
 
+  "dress",
+  "skirt",
+
+  "earring",
+  "bangle",
+
   "short",
   "baggy",
   "jean",
-  "dress",
   "polo",
   "vest top",
 ];
-const styleTypes = ["baggy", "beaded", "crossbody"];
+const styleTypes = [
+  "baggy",
+  "beaded",
+  "crossbody",
+  "sleeveless",
+  "v-neck",
+  "tie-up",
+];
 const materials = [
   "tweed",
   "leather",
@@ -62,6 +78,8 @@ const materials = [
   "natural",
   "cotton",
   "polyester",
+  "fabric",
+  "stone",
 ];
 const colorSynonyms = {
   yellow: ["lime", "lemon", "gold", "canary"],
@@ -79,6 +97,7 @@ const colorSynonyms = {
     "caramel",
     "warm desert",
     "desert",
+    "taupe",
   ],
   grey: ["gray", "ash", "silver"],
   black: ["midnight", "coal"],
@@ -97,6 +116,7 @@ const colors = [
   "ash",
   "silver",
   "red",
+  "taupe",
   "pink",
   "light pink",
   "magenta",

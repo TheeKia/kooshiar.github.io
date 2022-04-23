@@ -31,6 +31,7 @@
       }
       #searchBar {
         position: fixed;
+        left: 0;
         top: 80px;
         width: 100%;
         .searchInput-container {
@@ -52,6 +53,7 @@
       width: 92%;
       .item {
         article.container {
+          overflow-x: hidden;
           .info {
             h3.title {
               font-size: 1rem;
@@ -62,7 +64,7 @@
               display: none;
             }
             .readMore {
-              display: none;
+              display: block;
             }
           }
         }
@@ -82,14 +84,12 @@
             }
             div.mainImage {
               display: none;
-              // max-width: 100%;
-              // min-width: 100%;
             }
             .info {
               overflow-y: scroll;
               min-height: 100vh;
               h3.title {
-                max-width: 100%;
+                max-width: calc(100% - 25px);
                 font-size: 1.2rem;
                 margin-bottom: 1rem;
               }
@@ -110,6 +110,10 @@
               }
               a.domain {
                 display: flex;
+              }
+              button.like {
+                bottom: unset;
+                top: 1.4rem;
               }
             }
           }
@@ -133,6 +137,19 @@
       text-align: center;
       margin-top: 25px;
       margin-bottom: -25px;
+    }
+
+    &.EXPANDED {
+      border-right: none; // for scrollbar
+      header {
+        border-right: none; // for scrollbar
+      }
+      .expanded {
+        article.container {
+          transition: border-right 0s;
+          border-right: none; // for scrollbar
+        }
+      }
     }
   }
   #prevHistory {

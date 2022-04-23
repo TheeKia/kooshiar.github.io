@@ -208,7 +208,6 @@ window.onresize = (ev) => {
   if (windowWidth === window.innerWidth) return;
   windowWidth = window.innerWidth;
   setMinColWidth();
-  console.log(windowWidth, minColWidth);
   numberOfCols = Math.floor((windowWidth * 0.8) / minColWidth);
   columns = [];
   mainContainer.innerHTML = "";
@@ -479,11 +478,11 @@ function addItem(ref, columns, count) {
       prevHistory.style.transform = "translateX(25px)";
 
       setTimeout(() => {
-        div_imgBG.style.transition = "all 0.3s ease-in-out";
-        img.style.transition = "all 0.3s ease-in-out";
-        div_info.style.transition = "all 0.3s ease-in-out";
-        div_close.style.transition = "all 0.3s ease-in-out";
-        prevHistory.style.transition = "all 0.3s ease-in-out";
+        div_imgBG.style.transition = "all 0.5s ease-in-out";
+        img.style.transition = "all 0.5s ease-in-out";
+        div_info.style.transition = "all 0.5s ease-in-out";
+        div_close.style.transition = "all 0.5s ease-in-out";
+        prevHistory.style.transition = "all 0.5s ease-in-out";
 
         div_imgBG.style.opacity = 1;
         div_imgBG.style.transform = "translateX(0)";
@@ -498,7 +497,7 @@ function addItem(ref, columns, count) {
 
         similarsTimeout = setTimeout(() => {
           loadSimilars(section_similar, ref[count - 1], div_close);
-        }, 300);
+        }, 500);
       }, 50);
     }, 300);
   });
@@ -604,8 +603,6 @@ function addItem(ref, columns, count) {
       // Show item
       setTimeout(() => {
         showItem(div_item);
-        // div_item.style.minHeight =
-        // (theCol.offsetWidth / img.width) * img.height + "px"; // So the height doesn't depend on the image anymore
       }, 300);
     };
   } catch {
@@ -703,6 +700,7 @@ document.addEventListener("scroll", (ev) => {
     fetch(`https://xoosha.com/ws/1/test.php?offset=${offset}`)
       .then((res) => res.json())
       .then((newData) => {
+        offset += 60;
         let postProcessData = newData.map((product) => {
           let type = productType(product);
           product["type"] = type;
@@ -712,7 +710,6 @@ document.addEventListener("scroll", (ev) => {
         data = data.concat(postProcessData);
 
         addItem(data, columns, addedItems);
-        offset += 60;
       });
   }
 });
