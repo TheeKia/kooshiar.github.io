@@ -606,6 +606,18 @@ function addItem(ref, columns, count) {
         showItem(div_item);
       }, 300);
     };
+    img.onerror = () => {
+      console.log("Skipping the image. Server-Side ERROR");
+      count++;
+      if (count < ref.length) addItem(ref, columns, count);
+      else {
+        clearTimeout(loadingTimeout);
+        loadingTimeout = setTimeout(() => {
+          showFooterLoading(false);
+        }, 500);
+        isLoading = false;
+      }
+    };
   } catch {
     // Repeat
     count++;
