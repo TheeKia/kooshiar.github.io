@@ -140,6 +140,7 @@ if (theme === "dark") {
  */
 Btn_favorites.addEventListener("click", () => {
   document.body.classList.remove("EXPANDED");
+  El_searchInput.value = "";
   let newData;
   showFooterLoading(true);
   isLoading = true;
@@ -660,6 +661,14 @@ El_searchInput.addEventListener("focusout", (ev) => {
   }
 });
 El_searchInput.addEventListener("input", (ev) => {
+  if (Btn_favorites.classList.contains("active")) {
+    isShowingFavorites = false;
+    document.body.classList.remove("FAVORITES");
+    Btn_favorites.classList.remove("active");
+    Btn_favorites.dataset.icon = "bookmark_border";
+    Btn_favorites.innerHTML = "Show saves";
+    newData = data;
+  }
   isSearching = true;
   document.body.classList.remove("EXPANDED");
   document.body.classList.add("SEARCHING");
