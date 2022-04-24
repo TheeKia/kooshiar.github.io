@@ -139,6 +139,7 @@ if (theme === "dark") {
  * * Favorites List
  */
 Btn_favorites.addEventListener("click", () => {
+  document.body.classList.remove("EXPANDED");
   let newData;
   showFooterLoading(true);
   isLoading = true;
@@ -342,7 +343,6 @@ function loadSimilars(container, refrence, closeElement) {
     similars = similar[3].concat(similar[2], similar[1], similar[0]);
     if (similars.length > 8) similars = similars.slice(0, 8);
   });
-  // TODO: Accuracy (length of similars)
   if (similars.length > 0) {
     addSimilars(container, similars, closeElement);
     container.classList.add("active");
@@ -661,6 +661,7 @@ El_searchInput.addEventListener("focusout", (ev) => {
 });
 El_searchInput.addEventListener("input", (ev) => {
   isSearching = true;
+  document.body.classList.remove("EXPANDED");
   document.body.classList.add("SEARCHING");
   if (ev.target.value == "") {
     isSearching = false;
