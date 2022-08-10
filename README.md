@@ -1,5 +1,6 @@
 Kooshiar - [Front-End Competition](https://github.com/kooshiar/competitions)
-[See in action](https://drastraa.github.io/Kooshiar/)
+
+[See the code in action](https://drastraa.github.io/Kooshiar/)
 
 Build a Pinterest-style web page that displays information from the API endpoint.
 
